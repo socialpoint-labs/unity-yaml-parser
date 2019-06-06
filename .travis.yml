@@ -1,0 +1,81 @@
+# ref : Anaconda Inc., Using conda with Travis CI, Conda documentation, https://conda.io/docs/user-guide/tasks/use-conda-with-travis-ci.html
+#       CodeChat, .travis.yml - Travis CI configuration, https://pythonhosted.org/CodeChat/.travis.yml.html
+#       Travis CI, Python example (unsupported languages), https://docs.travis-ci.com/user/multi-os/#python-example-unsupported-languages
+#       Kalderimis & Nagy, Windows is Available (Early Release), Oct 10 2018, https://blog.travis-ci.com/2018-10-11-windows-early-release
+#       Miniconda (Python 3) 4.5.11, Chocolatey Gallery, https://chocolatey.org/packages/miniconda3
+#       The Windows Build Environment, https://docs.travis-ci.com/user/reference/windows/
+#       Minimal .travis.yml file to run the current Python 3.7 on Linux, macOS, and Windows, https://github.com/cclauss/Travis-CI-Python-on-three-OSes
+
+language : shell
+
+env:
+  - CONDA_PYTHON=3.5
+  - CONDA_PYTHON=3.6
+  - CONDA_PYTHON=3.7
+
+os:
+  - linux
+  - osx
+  - windows
+
+before_install:
+  # set conda path info
+  - if [[ "$TRAVIS_OS_NAME" != "windows" ]]; then
+      MINICONDA_PATH=$HOME/miniconda;
+      MINICONDA_SUB_PATH=$MINICONDA_PATH/bin;
+    elif [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
+      MINICONDA_PATH=/c/tools/miniconda3/;
+      MINICONDA_PATH_WIN=`cygpath --windows $MINICONDA_PATH`;
+      MINICONDA_SUB_PATH=$MINICONDA_PATH/Scripts;
+    fi;
+  # obtain miniconda installer
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+    elif  [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;
+    fi;
+
+install:
+  # install miniconda
+  # pip and conda will also need OpenSSL for Windows
+  - if [[ "$TRAVIS_OS_NAME" != "windows" ]]; then
+      bash miniconda.sh -b -p $HOME/miniconda;
+    elif  [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
+      choco install openssl.light;
+      choco install miniconda3 --params="'/AddToPath:1 /D:$MINICONDA_PATH_WIN'";
+    fi;
+  - export PATH="$MINICONDA_PATH:$MINICONDA_SUB_PATH:$PATH";
+  # for conda version 4.4 or later
+  - source $MINICONDA_PATH/etc/profile.d/conda.sh;
+  - hash -r;
+  - conda config --set always_yes yes --set changeps1 no;
+  - conda update -q conda;
+  - echo "Python $CONDA_PYTHON running on $TRAVIS_OS_NAME";
+  - conda create --name test-environment python=$CONDA_PYTHON;
+  - conda activate test-environment;
+  - conda --version ; python --version ; pip --version;
+  - pip install -r requirements_dev.txt
+
+script:
+  - pytest
+#jobs:
+#  include:
+#    - stage: release
+#      language: python
+#      python:
+#        - '3.6'
+#      env:
+#        - TRAVIS=true
+#        - DEBUG=*
+#        - secure: esDtvS0I48EiAw4DaRI3ehecrr3XtPpaK9wBSE0wlsg+hzXTj47f1F7SsJz2mV41ItZYqWcl13YUVrW5bfGND/D/nmDM705Vr5l9BzYltAJH0HC6BlM6EcgxN09lbj7RkAIV3b7/bI++ImxGqKy+HLYguodQMKx2H1Q1JSGiiLHE69HvfKEsyqPemSiEliJjPl3J2YbhMnGeWMpyKgAvDfFvn0O0Ng/rMizUq+v3Gqw/jDtnL8l57NAec8K71L2lDcap9v0nbXolo5/PjNuslSVwm54YDk2akLoc6Z7SaIQSaUKId6G/V6Jm0j3myU/zNcb8F9H3SWXuFyE3qLirsjiMgGkGud+9iTdr4D752XjPW5XIogdkA8HOv0ZUla3fRjTBaCGftks24son4ZlZWa9SY7MyQbIbtJeN6WAjb8iGpWEQvzDnc3WMkC121giakYp98tj0ibtt9+n2QPY08pJjXbZWVcofvyUA1BB6/UVm9kiNUbek828A1QNSYhbDyiKg/GMG9cqBQ7pPOw2NXup6zmdQJLwBvBtrwUs6XekGwnUvYeRuO/KeZ/te8cp2feN7VGrOay28j6ZAWVCLZMw+zQshMEsrCE29f5rFHkuv9CgXJKptuRQDPNd6nOwI9y8NTuNpdOrM4J/wyFvBo4bWPqRJtwjdgweuAy/7ess=
+#        - secure: CtIigyqfUb096XbsZ3LeY2b79QUVAo68w75qizdVvFdM487I3B0p7g4KzYwF/LG1Nx/JRFaphuntMLyvkhJY5UqBsEYWKmF3672Y1chtqkkn/nkXjss2yRFBldmMY33GtFqHplZGkBm/Nb4T6g6S2+shQW9mwbf6c7PqEZWj/6XXMmamVNFD/CSl3rr9hhl/4+YfnASsszykXZuqPqvpbW/oNmWGq6LlgIN4X1l44IVoNq0oL2XnqqiUVuqM1kiJWhT+OfO32GoJtmw0Wc9s20cMdIQZXzTwHsqfao3IhNjE5w3erJ3IpzO/7Nk6E/oVJbknwhQdtMjkbeplWk5pxFTRZJYBeze/y1/mT3TyjVc6RBcUw4S80vtb5BekKlAAhDzpnykJzc+yIp/gjm/A8fiFUZukyVYdUkXDmro+xkD+crw7Yc1otGi8DSRjPmh5jgxHfg8Fyx6QHO8h4WnIbd15kTZFFJGG5ThP33NxhcUVVHyjBBGupzVhtUj1UY3ktNXrWWcvMLAMkwacFqIwJmCFcnRIqGTgzwFHe+rGI7uUX9sC1hd5d6hliXC6NXmbwLFkUUgjKVyz8u4UR6pEOsndLS+Ka9EONEAX2dInwvSyYRBoB7olQzuT0DeQ0nK7ezAk0uv7ydNMvnIMgccigqs46ONEniOzaM6czIu2pwY=
+#        - secure: eryx7zoW0trikeIU7TUyvXd0uc7jH/egVXV4yHajH+oMIjhi9EJdekdul69S/AtzunmvF3DOBEk3THlgby41WH6Qt98KYnHUwAqlE5VqPhXU2E+aqm+HMEHXhsqp7ghuvkmcUXzeWJXPgDHq/ltSYb6v/2l213cwJxJjhSwvRRi7eBxdl4akKLaH0X5tU5kNi+5UOWUReEaXy8GSlVHPPJJsGjzpoaDy9DcX2XU7jUoqpsAWSqEzYFVumFuI+D2p+u8/4Kx+osxDP+kyXx92MKO875I2Q8CSPAa39fN425CVoEbCmBToHzFDOUMepY4H8cwpp/Hlq0VZC7fwKgPNRMTUzFl74YYpUalu97D+bD/Xbm6YcMJ3Lk7J1J9GvB5wit890IGgMNc+nmQ3UUh8tT6Ry/lptf/FJd+KFufVy+HaryAc87tsi3w5BAIU/ZiurAitjomVRrRgZU3HpzzLOTlphysZEju33q+BhpvOQo5ubWprjbIgDyfIAeJFZX+CQUDt4jVc2LHjPwnYXh70BPw6LDJkaF4ga+K81kNdtm01qetcgldSAQYuB6xQZSsIgOs2xn2MuS3seUB6nZrjF81qTVmfNdYWACj5KHsrMzXVMo5oOYLhuzVA5lD56IrIe6v1gCECaN+J70qARCMZkAWfzBmYlvSylB9LQe1wG+E=
+#      install: skip
+#      script:
+#      - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+#      - git config --global user.name "semantic-release (via TravisCI)"
+#      - git config --global user.email "semantic-release@travis"
+#      - if [ "$BRANCH" == "master" ]; then pip install python-semantic-release git-changelog; fi
+#      - if [ "$BRANCH" == "master" ]; then git-changelog -s angular -t angular -o CHANGELOG.md .; fi
+#      - if [ "$BRANCH" == "master" ]; then git add CHANGELOG.md && git commit -m "update CHANGELOG.md" && git push origin master; fi
+#      - if [ "$BRANCH" == "master" ]; then semantic-release publish; fi

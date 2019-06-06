@@ -1,0 +1,6 @@
+unityparser is developed and maintained by Social Point engineering team and community
+contributors. It was created by Ricard Valverde (sp-ricard-valverde).
+
+A full list of contributors is available from git with::
+
+    git shortlog -sne
