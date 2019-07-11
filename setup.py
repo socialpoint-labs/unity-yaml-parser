@@ -31,7 +31,7 @@ setup(
     license='MIT License',
     python_requires='>=3.5.0',
     packages=['unityparser'],
-    keywords=['unity','yaml','parser'],
+    keywords=['unity','yaml','parser','serializer'],
     install_requires=[
         'PyYAML==5.1',
     ],
