@@ -168,3 +168,6 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# vscode files
+**/.vscode/*
+**/*.stackdump
