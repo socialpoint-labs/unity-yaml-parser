@@ -7,6 +7,10 @@ lock = RLock()
 
 class UnityClassIdMap:
     __class_id_map = {}
+    
+    @classmethod
+    def reset(self):
+        UnityClassIdMap.__class_id_map.clear()
 
     @classmethod
     def get_or_create_class_id(cls, classid, classname):

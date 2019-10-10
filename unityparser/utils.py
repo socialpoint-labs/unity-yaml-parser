@@ -2,6 +2,7 @@ import yaml
 
 from .dumper import UnityDumper
 from .loader import UnityLoader
+from .constants import UnityClassIdMap
 
 UNIX_LINE_ENDINGS = '\n'
 
@@ -36,6 +37,7 @@ class UnityDocument:
 
     @classmethod
     def load_yaml(cls, file_path):
+        UnityClassIdMap.reset()
         with open(file_path, newline='') as fp:
             data = [d for d in yaml.load_all(fp, Loader=UnityLoader)]
             # use document line endings if no mixed lien endings found, else default to linux
