@@ -11,6 +11,8 @@ VERSION = (1, 1)
 
 class UnityDumper(Emitter, Serializer, Representer, Resolver):
 
+    extra_anchor_data = {}
+
     def __init__(self, stream,
                  default_style=None, default_flow_style=False,
                  canonical=None, indent=None, width=None,
@@ -36,6 +38,7 @@ def represent_unity_class(dumper, instance):
     node = dumper.represent_mapping('{}{}'.format(UNITY_TAG_URI, instance.__class_id), data, False)
     # UNITY: set MappingNode anchor and all set all it's descendants anchors to None
     dumper.anchors[node] = instance.anchor
+    dumper.extra_anchor_data[instance.anchor] = instance.extra_anchor_data
     for key, value in node.value:
         dumper.anchor_node(key)
         dumper.anchor_node(value)
