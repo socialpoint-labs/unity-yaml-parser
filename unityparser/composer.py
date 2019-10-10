@@ -22,3 +22,8 @@ class Composer(YamlComposer):
             if node == v:
                 return k
         raise ComposerError("Expected anchor to be present for node")
+
+    def get_extra_anchor_data_from_node(self, anchor):
+        if anchor in self.extra_anchor_data:
+            return self.extra_anchor_data[anchor]
+        return ''

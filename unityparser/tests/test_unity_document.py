@@ -19,3 +19,12 @@ class TestUnityDocument:
         doc.dump_yaml(file_path=str(dumped_file_path))
 
         assert base_file_path.read() == dumped_file_path.read()
+
+    def test_unity_extra_anchor_data(self, fixtures, tmpdir):
+        base_file_path = py.path.local(fixtures['UnityExtraAnchorData.prefab'])
+        doc = UnityDocument.load_yaml(str(base_file_path))
+        dumped_file_path = tmpdir.join('UnityExtraAnchorData.prefab')
+        doc.dump_yaml(file_path=str(dumped_file_path))
+
+        assert base_file_path.read() == dumped_file_path.read()
+
