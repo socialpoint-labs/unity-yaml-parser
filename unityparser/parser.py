@@ -5,9 +5,6 @@ from yaml.tokens import DocumentEndToken, StreamEndToken, DocumentStartToken, St
 
 class Parser(YamlParser):
 
-    # UNITY: used to store data after the anchor
-    extra_anchor_data = {}
-
     def parse_document_start(self):
 
         # Parse any extra document end indicators.

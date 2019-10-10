@@ -4,14 +4,13 @@ from yaml.serializer import Serializer
 from .constants import UNITY_TAG_URI, UnityClass, OrderedFlowDict
 from .emitter import Emitter
 from .resolver import Resolver
+from .serializer import Serializer
 
 UNITY_TAG = {'!u!': UNITY_TAG_URI}
 VERSION = (1, 1)
 
 
 class UnityDumper(Emitter, Serializer, Representer, Resolver):
-
-    extra_anchor_data = {}
 
     def __init__(self, stream,
                  default_style=None, default_flow_style=False,

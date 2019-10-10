@@ -7,6 +7,9 @@ class Composer(YamlComposer):
         # Drop the DOCUMENT-START event.
         self.get_event()
 
+        # UNITY: used to store data after the anchor
+        self.extra_anchor_data = {}
+
         # Compose the root node.
         node = self.compose_node(None, None)
 
