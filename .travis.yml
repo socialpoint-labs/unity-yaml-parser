@@ -28,6 +28,7 @@ before_install:
       MINICONDA_PATH_WIN=`cygpath --windows $MINICONDA_PATH`;
       MINICONDA_SUB_PATH=$MINICONDA_PATH/Scripts;
     fi;
+  - MINICONDA_LIB_BIN_PATH=$MINICONDA_PATH/Library/bin;
   # obtain miniconda installer
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
@@ -44,7 +45,7 @@ install:
       choco install openssl.light;
       choco install miniconda3 --params="'/AddToPath:1 /D:$MINICONDA_PATH_WIN'";
     fi;
-  - export PATH="$MINICONDA_PATH:$MINICONDA_SUB_PATH:$PATH";
+  - export PATH="$MINICONDA_PATH:$MINICONDA_SUB_PATH:$MINICONDA_LIB_BIN_PATH:$PATH";
   # for conda version 4.4 or later
   - source $MINICONDA_PATH/etc/profile.d/conda.sh;
   - hash -r;
