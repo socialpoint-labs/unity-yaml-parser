@@ -19,13 +19,14 @@ class UnityClassIdMap:
 
     @classmethod
     def get_or_create_class_id(cls, classid, classname):
-        k = "{}-{}".format(classid, classname)
         with lock:
-            unity_cls = UnityClassIdMap.__class_id_map.setdefault(k,
-                                                                  type(classname, (UnityClass,),
-                                                                       {'__class_id': classid,
-                                                                        '__class_name': classname}))
-        return unity_cls
+            k = "{}-{}".format(classid, classname)
+            try:
+                unity_cls = UnityClassIdMap.__class_id_map[k]
+            except KeyError:
+                unity_cls = type(classname, (UnityClass,), {'__class_id': classid, '__class_name': classname})
+                UnityClassIdMap.__class_id_map[k] = unity_cls
+            return unity_cls
 
 
 class UnityClass:
