@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &100100000
+--- !u!129 &100100000
 Prefab:
   m_ObjectHideFlags: 1
   serializedVersion: 2
