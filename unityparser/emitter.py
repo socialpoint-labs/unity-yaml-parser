@@ -66,6 +66,7 @@ class Emitter(YamlEmitter):
             # UNITY: tag and anchor appearance order swithced
             self.process_tag()
             self.process_anchor('&')
+            self.process_anchor_extra()
             if isinstance(self.event, ScalarEvent):
                 self.expect_scalar()
             elif isinstance(self.event, SequenceStartEvent):
@@ -195,3 +196,8 @@ class Emitter(YamlEmitter):
                     start += 1
             end += 1
         self.write_indicator('"', False)
+
+    def process_anchor_extra(self):
+        if self.event.anchor is None or self.event.anchor not in self.extra_anchor_data:
+            return
+        self.write_indicator(self.extra_anchor_data[self.event.anchor], False)
