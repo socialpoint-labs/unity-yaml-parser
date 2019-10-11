@@ -10,7 +10,8 @@ class UnityClassIdMap:
     
     @classmethod
     def reset(self):
-        UnityClassIdMap.__class_id_map.clear()
+        with lock:
+            UnityClassIdMap.__class_id_map.clear()
         
     @classmethod
     def get_or_create_class_id(cls, classid, classname):
