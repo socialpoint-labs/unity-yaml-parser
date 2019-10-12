@@ -85,4 +85,3 @@ You have to make sure to convert every modified/added value(or _dict_ key) in th
 
 Text scalars which are single or double quoted that span multiple lines are not being dumped exactly as Unity does. There's a difference in the maximum length allowed per line and the logic to wrap them.
 
-**Unity scenes are not yet supported**. It shouldn't require much effort to do so.

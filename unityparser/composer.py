@@ -7,6 +7,9 @@ class Composer(YamlComposer):
         # Drop the DOCUMENT-START event.
         self.get_event()
 
+        # UNITY: used to store data after the anchor
+        self.extra_anchor_data = {}
+
         # Compose the root node.
         node = self.compose_node(None, None)
 
@@ -22,3 +25,8 @@ class Composer(YamlComposer):
             if node == v:
                 return k
         raise ComposerError("Expected anchor to be present for node")
+
+    def get_extra_anchor_data_from_node(self, anchor):
+        if anchor in self.extra_anchor_data:
+            return self.extra_anchor_data[anchor]
+        return ''

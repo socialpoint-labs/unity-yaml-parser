@@ -25,8 +25,9 @@ class UnityClassIdMap:
 class UnityClass:
     __class_id = ''
 
-    def __init__(self, anchor):
+    def __init__(self, anchor, extra_anchor_data):
         self.anchor = anchor
+        self.extra_anchor_data = extra_anchor_data
 
     def update_dict(self, d):
         # replace and append current object attributes to self dict
@@ -38,6 +39,7 @@ class UnityClass:
         # return a copy of the objects attributes but the ones we don't want
         d = copy(self.__dict__)
         del d['anchor']
+        del d['extra_anchor_data']
         return d
 
 

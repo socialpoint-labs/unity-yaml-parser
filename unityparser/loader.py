@@ -50,7 +50,8 @@ def construct_unity_class(loader, tag_suffix, node):
 
     cls = UnityClassIdMap.get_or_create_class_id(classid, classname)
     anchor = loader.get_anchor_from_node(node)
-    value = cls(anchor)
+    extra_anchor_data = loader.get_extra_anchor_data_from_node(anchor)
+    value = cls(anchor, extra_anchor_data)
     value.update_dict(loader.construct_mapping(class_attributes_node, deep=True))
     return value
 
