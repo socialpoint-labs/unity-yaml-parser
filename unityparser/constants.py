@@ -6,24 +6,32 @@ lock = RLock()
 
 
 class UnityClassIdMap:
+    # Hold 'id-classname':UnityClass values
+    # UnityClass cannot be uniquely identified by id(https://docs.unity3d.com/Manual/ClassIDReference.html)
+    # because multiple serialized files in a project can belong to multiple Unity versions and some of them,
+    # specially very old versions < 5.X, have different names for the same id(ie. id:1001 Prefab vs PrefabInstance)
     __class_id_map = {}
-    
+
     @classmethod
     def reset(self):
-        UnityClassIdMap.__class_id_map.clear()
-        
+        with lock:
+            UnityClassIdMap.__class_id_map.clear()
+
     @classmethod
     def get_or_create_class_id(cls, classid, classname):
-        lock.acquire()
-        unity_cls = UnityClassIdMap.__class_id_map.setdefault(classid,
-                                                              type(classname, (UnityClass,),
-                                                                   {'__class_id': classid}))
-        lock.release()
-        return unity_cls
+        with lock:
+            k = "{}-{}".format(classid, classname)
+            try:
+                unity_cls = UnityClassIdMap.__class_id_map[k]
+            except KeyError:
+                unity_cls = type(classname, (UnityClass,), {'__class_id': classid, '__class_name': classname})
+                UnityClassIdMap.__class_id_map[k] = unity_cls
+            return unity_cls
 
 
 class UnityClass:
     __class_id = ''
+    __class_name = ''
 
     def __init__(self, anchor, extra_anchor_data):
         self.anchor = anchor
