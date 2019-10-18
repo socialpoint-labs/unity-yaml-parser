@@ -5,6 +5,9 @@
 #       Miniconda (Python 3) 4.5.11, Chocolatey Gallery, https://chocolatey.org/packages/miniconda3
 #       The Windows Build Environment, https://docs.travis-ci.com/user/reference/windows/
 #       Minimal .travis.yml file to run the current Python 3.7 on Linux, macOS, and Windows, https://github.com/cclauss/Travis-CI-Python-on-three-OSes
+stages:
+  - test
+  - lint
 
 language : shell
 
@@ -59,6 +62,21 @@ install:
 
 script:
   - pytest
+
+jobs:
+  include:
+    - stage: lint
+      language: node_js
+      node_js:
+        - "12.12"
+      install:
+        - npm install commitlint@8.2.0
+        - npm install @commitlint/config-conventional@8.2.0
+        - npm install @commitlint/travis-cli@8.2.0
+      script:
+        - commitlint-travis
+
+# Keep in mind to overwrite these here
 #jobs:
 #  include:
 #    - stage: release
