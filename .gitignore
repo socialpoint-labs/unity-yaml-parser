@@ -172,3 +172,6 @@ venv.bak/
 **/.vscode/*
 **/*.stackdump
 
+# node
+node_modules/
+package-lock.json
