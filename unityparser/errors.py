@@ -1,0 +1,2 @@
+class UnityDocumentError(Exception):
+    pass
