@@ -31,13 +31,22 @@ ProjectSettings.scriptingDefineSymbols['1'] += ';CUSTOM_DEFINE'
 ProjectSettings.scriptingDefineSymbols['7'] = ProjectSettings.scriptingDefineSymbols['1']
 doc.dump_yaml()
 
-# You can also load YAML files with multiple documents
+# You can also load YAML files with multiple documents and filter for a single or multiple entries
 hero_prefab_file = 'UnityProject/Assets/Prefabs/Hero.prefab'
 doc = UnityDocument.load_yaml(hero_prefab_file)
-for entry in doc.entries:
-  if entry.__class__.__name__ == 'MonoBehaviour' and getattr(entry, 'MaxHealth', None) is not None:
-    entry.MaxHealth = str(int(entry.MaxHealth) + 10)
-    break
+# accessing all entries
+doc.entries
+# [<UnityClass>, <UnityClass>, ...]
+# accessing first entry
+doc.entry
+# <UnityClass>
+# get single entry uniquely defined by filters
+entry = doc.get(class_name='MonoBehaviour', attributes=('m_MaxHealth',))
+entry.m_MaxHealth = str(int(entry.MaxHealth) + 10)
+# get multiple entries matching a filter
+entries = doc.filter(class_names=('MonoBehaviour',), attributes=('m_Enabled',))
+for entry in entries:
+    entry.m_Enabled = 'true'
 doc.dump_yaml()
 # calling entry method for a doc with multiple document will return the first one
 print(doc.entry.__class__.__name__)
@@ -68,6 +77,14 @@ _**Property**_: Return the _list_ of documents found in the YAML. The objects in
 #### unityparser.UnityDocument.entry ####
 
 _**Property**_: Return the first document in the YAML, useful if there is only one. Equivalent of doing `UnityDocument.entries[0]`.
+
+#### unityparser.UnityDocument.get(class_name=None, attributes=None) ####
+
+_**Method**_: Return a single entry uniquely matching the given filters. Must exist exactly one.
+
+#### unityparser.UnityDocument.filter(class_names=None, attributes=None) ####
+
+_**Method**_: Return a list of entries matching the given filters. Many or none can be matched.
 
 ### unityparser.loader.UnityLoader ###
 
