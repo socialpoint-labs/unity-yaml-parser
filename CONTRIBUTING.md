@@ -147,15 +147,21 @@ Unityparser follows the AngularJS commit specifications. Commit messages should 
 
 Allowed <type> values are the following::
 ```
+build (build related)
+chore (maintain)
+ci (continuous integration related)
+docs (documentation)
 feat (feature)
 fix (bug fix)
-docs (documentation)
+improvement (improve existing code)
+perf (prefromance related improvements)
+refactor (code refactoring)
+revert (reverted code)
 style (formatting)
-refactor
 test (when adding missing tests)
-chore (maintain)
 ```
 
+The exact rules are extracted from [this liter rules file](https://github.com/conventional-changelog/commitlint/blob/master/@commitlint/config-conventional/index.js).
 It's important to follow this commit specification, as the version numbers will be generated accordingly to the commit messages since the previous version.
 It's also important to specify which commits include breaking changes in the commit footer.
 

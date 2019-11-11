@@ -37,6 +37,10 @@ class UnityClass:
         self.anchor = anchor
         self.extra_anchor_data = extra_anchor_data
 
+    def get_attrs(self):
+        # get attribute set except those belonging to the Python class
+        return set(self.__dict__.keys() - ['anchor', 'extra_anchor_data'])
+
     def update_dict(self, d):
         # replace and append current object attributes to self dict
         old_d = self.__dict__
