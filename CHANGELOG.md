@@ -1,3 +1,37 @@
+# [1.0.0](https://github.com/socialpoint-labs/unity-yaml-parser/compare/v0.1.0...v1.0.0) (2019-12-06)
+
+
+### Features
+
+* **commitlint:** add commitlint configuration ([73d0d81](https://github.com/socialpoint-labs/unity-yaml-parser/commit/73d0d8112d7e62ef1db3f01b8f69f3803d037ccb))
+* **Makefile:** add update-changelog make command ([eb3cbd5](https://github.com/socialpoint-labs/unity-yaml-parser/commit/eb3cbd55fb85202abb0e53540904a6874971ef2e))
+* **resolver:** add safe value types int and float ([3bd6918](https://github.com/socialpoint-labs/unity-yaml-parser/commit/3bd6918cf20ba31c32b7fd567f2fc680c17f895f)), closes [#1](https://github.com/socialpoint-labs/unity-yaml-parser/issues/1) [#15](https://github.com/socialpoint-labs/unity-yaml-parser/issues/15)
+* **travis:** add commitlint check step to Travis CI ([050f4d5](https://github.com/socialpoint-labs/unity-yaml-parser/commit/050f4d5f1aa245eee17555f1ea9a86a70286a7d2))
+* **unitydocument:** add get and filter methods to UnityDocument ([36a4b91](https://github.com/socialpoint-labs/unity-yaml-parser/commit/36a4b9150c4b9cd81ccb0829ee07ec67c62c02fc))
+
+
+### BREAKING CHANGES
+
+* **resolver:** loaded UnityClass entries attributes may now be int or
+float too, not only strings.
+
+To migrate the code, ensure you are explicitly casting to str whenever you
+manipulate entry attributes like below:
+
+Before:
+
+new_id = doc.entry.build + '-dev' # => '123-dev'
+
+After:
+
+new_id = str(doc.entry.build) + '-dev'
+
+By allowing int and float safe values, no casting is needed in Python code
+to do number manipulation back and forth(to deserialize from and serialize
+to string).
+
+
+
 # [0.1.0](https://github.com/socialpoint-labs/unity-yaml-parser/compare/v0.0.1...v0.1.0) (2019-10-18)
 
 
