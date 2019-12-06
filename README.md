@@ -27,8 +27,8 @@ from unityparser import UnityDocument
 project_settings_file = 'UnityProject/ProjectSettings/ProjectSettings.asset'
 doc = UnityDocument.load_yaml(project_settings_file)
 ProjectSettings = doc.entry
-ProjectSettings.scriptingDefineSymbols['1'] += ';CUSTOM_DEFINE'
-ProjectSettings.scriptingDefineSymbols['7'] = ProjectSettings.scriptingDefineSymbols['1']
+ProjectSettings.scriptingDefineSymbols[1] += ';CUSTOM_DEFINE'
+ProjectSettings.scriptingDefineSymbols[7] = ProjectSettings.scriptingDefineSymbols[1]
 doc.dump_yaml()
 
 # You can also load YAML files with multiple documents and filter for a single or multiple entries
@@ -42,11 +42,11 @@ doc.entry
 # <UnityClass>
 # get single entry uniquely defined by filters
 entry = doc.get(class_name='MonoBehaviour', attributes=('m_MaxHealth',))
-entry.m_MaxHealth = str(int(entry.MaxHealth) + 10)
+entry.m_MaxHealth += 10
 # get multiple entries matching a filter
 entries = doc.filter(class_names=('MonoBehaviour',), attributes=('m_Enabled',))
 for entry in entries:
-    entry.m_Enabled = 'true'
+    entry.m_Enabled = 1
 doc.dump_yaml()
 # calling entry method for a doc with multiple document will return the first one
 print(doc.entry.__class__.__name__)
@@ -95,10 +95,6 @@ PyYAML's Loader class, can be used directly with PyYAML to customise loading.
 PyYAML's Dumper class, can be used directly with PyYAML to customise dumping. 
 
 ## Considerations ##
-
-**unityparser** converts _every_ scalar value in the YAML to _string_ when loading the data for safety purposes. Any key from the mappings in the YAML included.   
-
-You have to make sure to convert every modified/added value(or _dict_ key) in the loaded data object back to _string_ before dumping the document. Otherwise the written YAML will contain ugly tags.
 
 Text scalars which are single or double quoted that span multiple lines are not being dumped exactly as Unity does. There's a difference in the maximum length allowed per line and the logic to wrap them.
 
