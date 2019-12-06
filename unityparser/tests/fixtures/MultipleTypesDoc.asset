@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!129 &1
+MultipleTypes:
+  scalar_int_000: 0
+  scalar_int_001: 15
+  map_000: {scalar_int_002: 0}
+  scalar_int_003: -1
+  map_001: {scalar_float_000: 0.13725491, scalar_float_001: 0.12156863, scalar_float_002: 0.1254902}
+  scalar_float_003: 0.1
+  map_002: {scalar_float_004: -16.09, scalar_float_005: -10.47}
+  scalar_str_000: 010000000100000001000000010000000100000001000000
+  scalar_str_001: public.app-category.games
+  scalar_str_002: 00000000
+  scalar_str_003: 5f34be1353de5cf4398729fda238591b
+  scalar_str_004: 0b000000
+  scalar_str_005: 0x01004b9000490000
+  scalar_str_006: 1.0.0
+  scalar_str_007: 01.00
