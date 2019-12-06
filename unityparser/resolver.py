@@ -18,23 +18,16 @@ class Resolver(BaseResolver):
 #                     |on|On|ON|off|Off|OFF)$''', re.X),
 #     list('yYnNtTfFoO'))
 
-# Resolver.add_implicit_resolver(
-#     'tag:yaml.org,2002:float',
-#     re.compile(r'''^(?:[-+]?(?:[0-9][0-9_]*)\.[0-9_]*(?:[eE][-+][0-9]+)?
-#                     |\.[0-9_]+(?:[eE][-+][0-9]+)?
-#                     |[-+]?[0-9][0-9_]*(?::[0-5]?[0-9])+\.[0-9_]*
-#                     |[-+]?\.(?:inf|Inf|INF)
-#                     |\.(?:nan|NaN|NAN))$''', re.X),
-#     list('-+0123456789.'))
+Resolver.add_implicit_resolver(
+    'tag:yaml.org,2002:float',
+    re.compile(r'''^(?:[-+]?(?:0|[1-9][0-9]*)\.(?:[1-9]|[0-9][0-9]*[1-9])?)$''', re.X),
+    list('-+0123456789.'))
 
-# Resolver.add_implicit_resolver(
-#     'tag:yaml.org,2002:int',
-#     re.compile(r'''^(?:[-+]?0b[0-1_]+
-#                     |[-+]?0[0-7_]+
-#                     |[-+]?(?:0|[1-9][0-9_]*)
-#                     # UNITY: Removed base 60 conversion
-#                     |[-+]?0x[0-9a-fA-F_]+)$''', re.X),
-#     list('-+0123456789'))
+Resolver.add_implicit_resolver(
+    'tag:yaml.org,2002:int',
+    # UNITY: Restrict to simple integer values
+    re.compile(r'''^(?:[-+]?(?:0|[1-9][0-9]*))$''', re.X),
+    list('-+0123456789'))
 
 # Resolver.add_implicit_resolver(
 #     'tag:yaml.org,2002:merge',
