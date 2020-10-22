@@ -112,7 +112,7 @@ class UnityProjectTester:
     @staticmethod
     def open_and_save(asset_file_path, print_queue, diff_list, keep_changes=False, dry_run=False):
         # check YAML version header, save original content
-        with open(asset_file_path, 'rb') as fp:
+        with open(str(asset_file_path), 'rb') as fp:
             header = fp.read(len(YAML_HEADER))
             try:
                 is_yaml_file = header.decode('utf-8') == YAML_HEADER
@@ -126,25 +126,25 @@ class UnityProjectTester:
                     fp.seek(0)
                     print_queue.put("Processing {}".format(asset_file_path))
             a_file_content = fp.read()
-        doc = UnityDocument.load_yaml(asset_file_path)
+        doc = UnityDocument.load_yaml(str(asset_file_path))
 
         if dry_run:
             return
 
         try:
             doc.dump_yaml()
-            with open(asset_file_path, 'rb') as fp:
+            with open(str(asset_file_path), 'rb') as fp:
                 b_file_content = fp.read()
 
             # compare
             if a_file_content != b_file_content:
                 diff_list.append(asset_file_path)
                 if not keep_changes:
-                    with open(asset_file_path, 'wb') as fp:
+                    with open(str(asset_file_path), 'wb') as fp:
                         fp.write(a_file_content)
 
         except Exception:
-            with open(asset_file_path, 'wb') as fp:
+            with open(str(asset_file_path), 'wb') as fp:
                 fp.write(a_file_content)
             raise
 
