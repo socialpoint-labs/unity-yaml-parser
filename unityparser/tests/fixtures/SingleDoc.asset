@@ -862,3 +862,6 @@ PlayerSettings:
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
+  doubleQuotedString: "Preserve double quoted strings with the same quotes"
+  singleQuotedString: 'Preserve single quoted strings with the same quotes'
+  plainString: Preserve single quoted strings with the same quotes
