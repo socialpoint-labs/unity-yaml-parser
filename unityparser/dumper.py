@@ -1,8 +1,9 @@
-from yaml.representer import Representer
 from yaml.serializer import Serializer
 
 from .constants import UNITY_TAG_URI, UnityClass, OrderedFlowDict
+from .constructor import uniqstr
 from .emitter import Emitter
+from .representer import Representer
 from .resolver import Resolver
 from .serializer import Serializer
 
@@ -17,7 +18,7 @@ class UnityDumper(Emitter, Serializer, Representer, Resolver):
                  canonical=None, indent=None, width=None,
                  allow_unicode=None, line_break=None,
                  encoding=None, explicit_start=None, explicit_end=None,
-                 version=None, tags=None, sort_keys=True):
+                 version=None, tags=None, sort_keys=True, register=None):
         tags = tags or {}
         tags.update(UNITY_TAG)
         version = version or VERSION
@@ -28,7 +29,8 @@ class UnityDumper(Emitter, Serializer, Representer, Resolver):
                             explicit_start=explicit_start, explicit_end=explicit_end,
                             version=version, tags=tags)
         Representer.__init__(self, default_style=default_style,
-                             default_flow_style=default_flow_style, sort_keys=sort_keys)
+                             default_flow_style=default_flow_style,
+                             sort_keys=sort_keys, register=register)
         Resolver.__init__(self)
 
 
@@ -53,6 +55,12 @@ def represent_none(dumper, instance):
     return dumper.represent_scalar('tag:yaml.org,2002:null', '')
 
 
+def represent_str(dumper, instance):
+    style = dumper.register.pop(instance)
+    return dumper.represent_scalar('tag:yaml.org,2002:str', instance, style=style)
+
+
 Representer.add_multi_representer(UnityClass, represent_unity_class)
 Representer.add_representer(OrderedFlowDict, represent_ordered_flow_dict)
 Representer.add_representer(type(None), represent_none)
+Representer.add_representer(uniqstr, represent_str)
