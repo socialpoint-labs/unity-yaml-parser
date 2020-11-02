@@ -29,12 +29,12 @@ class LoaderVersionError(UpgradeVersionError):
 
 class UnityLoader(Reader, Scanner, Parser, Composer, Constructor, Resolver):
 
-    def __init__(self, stream):
+    def __init__(self, stream, register=None):
         Reader.__init__(self, stream)
         Scanner.__init__(self)
         Parser.__init__(self)
         Composer.__init__(self)
-        Constructor.__init__(self)
+        Constructor.__init__(self, register)
         Resolver.__init__(self)
 
 

@@ -18,7 +18,7 @@ class TestScalarValueTypes:
             split_attr = attr.split('_')
             if split_attr[0] == 'scalar':
                 expected_type = split_attr[1]
-                assert type(attr_value).__name__ == expected_type
+                assert issubclass(type(attr_value), eval(expected_type))
                 count_map[expected_type] += 1
             elif split_attr[0] == 'map':
                 for k in attr_value:
