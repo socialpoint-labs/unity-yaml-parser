@@ -33,7 +33,7 @@ setup(
     packages=['unityparser'],
     keywords=['unity','yaml','parser','serializer'],
     install_requires=[
-        'PyYAML==5.1',
+        'PyYAML==5.4',
     ],
     classifiers=[
         'Programming Language :: Python :: 3',
