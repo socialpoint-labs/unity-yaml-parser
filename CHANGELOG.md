@@ -1,3 +1,28 @@
+# [2.0.0](https://github.com/socialpoint-labs/unity-yaml-parser/compare/v1.0.0...v2.0.0) (2021-05-03)
+
+
+### Bug Fixes
+
+* **command:** convert Path to str ([157db9e](https://github.com/socialpoint-labs/unity-yaml-parser/commit/157db9eff900e604beb1408a48f4a6a648028aca))
+
+
+### chore
+
+* **setup:** drop support for Python 3.5 ([beaf2f6](https://github.com/socialpoint-labs/unity-yaml-parser/commit/beaf2f6ddbcd99ef05a95d8f613886d2687d194a))
+
+
+### Features
+
+* **representer:** save string representation ([6b2bb15](https://github.com/socialpoint-labs/unity-yaml-parser/commit/6b2bb150557fb7a13faba5bd7699722239762fa6))
+
+
+### BREAKING CHANGES
+
+* **setup:** A security update of PyYAML to 5.4 forces to drop
+support to Python 3.5
+
+
+
 # [1.0.0](https://github.com/socialpoint-labs/unity-yaml-parser/compare/v0.1.0...v1.0.0) (2019-12-06)
 
 
