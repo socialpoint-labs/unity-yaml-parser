@@ -43,14 +43,14 @@ jobs:
         run: |
            echo "::set-output name=MD5_CACHE_KEY::$(${{ matrix.md5_command }} tox.ini setup.py | ${{ matrix.md5_command }} | head -c 32)"
       - name: Restore cache
-        uses: actions/cache
+        uses: actions/cache@v2
         id: restore-cache
         with:
           path: |
             .tox
           key: ${{ runner.os }}-${{ steps.compute-cache-key.outputs.MD5_CACHE_KEY }}
       - name: Install miniconda
-        uses: conda-incubator/setup-miniconda
+        uses: conda-incubator/setup-miniconda@v2
         with:
           activate-environment: test
           python-version: 3.7
