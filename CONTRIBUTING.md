@@ -71,7 +71,7 @@ Use the issue tracker for this:
 
 - Install unityparser requirements with development dependencies::
   ```
-  pip install -r requirements_dev.txt"
+  pip install -r requirements/test.txt"
   ```
 
 [GitHub account]: https://github.com/join
@@ -104,7 +104,7 @@ Run the basic test suite with::
 pytest
 ```
 
-This only runs the tests for the current environment. Travis-CI will run the full
+This only runs the tests for the current environment. Github Actions will run the full
 suite when you submit your pull request.
 
 

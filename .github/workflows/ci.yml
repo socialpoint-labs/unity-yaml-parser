@@ -41,14 +41,17 @@ jobs:
       - name: Compute cache key
         id: compute-cache-key
         run: |
-           echo "::set-output name=MD5_CACHE_KEY::$(${{ matrix.md5_command }} tox.ini setup.py | ${{ matrix.md5_command }} | head -c 32)"
+           echo "::set-output name=MD5_CACHE_KEY::$(${{ matrix.md5_command }} tox.ini setup.py requirements/*.txt | ${{ matrix.md5_command }} | head -c 32)"
       - name: Restore cache
         uses: actions/cache@v2
         id: restore-cache
+        env:
+          CACHE_NUMBER: 0 # increase this number to force invalidate cache
         with:
           path: |
+            ~/conda_pkgs_dir
             .tox
-          key: ${{ runner.os }}-${{ steps.compute-cache-key.outputs.MD5_CACHE_KEY }}
+          key: ${{ runner.os }}-${{ steps.compute-cache-key.outputs.MD5_CACHE_KEY }}-${{ env.CACHE_NUMBER }}
       - name: Install miniconda
         uses: conda-incubator/setup-miniconda@v2
         with:
@@ -63,3 +66,26 @@ jobs:
           TOX_PARALLEL_NO_SPINNER: 1
         run: |
           tox --parallel --develop
+
+  release:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    needs:
+      - commitlint
+      - tests
+    outputs:
+      semantic-version: ${{ steps.get-semantic-version.outputs.VERSION }}
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: 'master'
+      - name: Python Semantic Release
+        if: github.repository == 'socialpoint-labs/sp-unity-yaml-parser'
+        uses: relekang/python-semantic-release@3c97d933e06d3ac719d3df79843ba068b3e95c52 # v7.15.5
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get sp-unity-yaml-parser version
+        run: echo ::set-output name=VERSION::$(cat ./version.txt)
+        id: get-semantic-version

@@ -1,0 +1,3 @@
+-r base.txt
+pytest-cov~=2.7
+pytest~=4.5
