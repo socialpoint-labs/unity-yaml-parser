@@ -31,10 +31,19 @@ setup(
     license='MIT License',
     python_requires='>=3.6.0',
     packages=['unityparser'],
-    keywords=['unity','yaml','parser','serializer'],
+    keywords=['unity', 'yaml', 'parser', 'serializer'],
     install_requires=[
         'PyYAML==5.4',
     ],
+    extras_require={
+        'test': [
+            'pytest-cov~=2.7',
+            'pytest~=4.5'
+        ],
+        'ci': [
+            'tox~=3.24'
+        ]
+    },
     classifiers=[
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3 :: Only',

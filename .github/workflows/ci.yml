@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: wagoid/commitlint-github-action@v4
+
+  tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            md5_command: md5sum
+          - os: macos-latest
+            md5_command: md5
+          - os: windows-latest
+            md5_command: md5sum
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+      - name: Export workspace path
+        run: |
+          echo $GITHUB_WORKSPACE >> $GITHUB_PATH
+      - name: Compute cache key
+        id: compute-cache-key
+        run: |
+           echo "::set-output name=MD5_CACHE_KEY::$(${{ matrix.md5_command }} tox.ini setup.py | ${{ matrix.md5_command }} | head -c 32)"
+      - name: Restore cache
+        uses: actions/cache
+        id: restore-cache
+        with:
+          path: |
+            .tox
+          key: ${{ runner.os }}-${{ steps.compute-cache-key.outputs.MD5_CACHE_KEY }}
+      - name: Install miniconda
+        uses: conda-incubator/setup-miniconda
+        with:
+          activate-environment: test
+          python-version: 3.7
+          use-only-tar-bz2: true
+          miniconda-version: latest
+      - name: Install tox
+        run: pip install tox
+      - name: Run tests
+        env:
+          TOX_PARALLEL_NO_SPINNER: 1
+        run: |
+          tox --parallel --develop
