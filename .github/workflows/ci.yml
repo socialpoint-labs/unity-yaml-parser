@@ -41,14 +41,17 @@ jobs:
       - name: Compute cache key
         id: compute-cache-key
         run: |
-           echo "::set-output name=MD5_CACHE_KEY::$(${{ matrix.md5_command }} tox.ini setup.py | ${{ matrix.md5_command }} | head -c 32)"
+           echo "::set-output name=MD5_CACHE_KEY::$(${{ matrix.md5_command }} tox.ini setup.py requirements/*.txt | ${{ matrix.md5_command }} | head -c 32)"
       - name: Restore cache
         uses: actions/cache@v2
         id: restore-cache
+        env:
+          CACHE_NUMBER: 0 # increase this number to force invalidate cache
         with:
           path: |
+            ~/conda_pkgs_dir
             .tox
-          key: ${{ runner.os }}-${{ steps.compute-cache-key.outputs.MD5_CACHE_KEY }}
+          key: ${{ runner.os }}-${{ steps.compute-cache-key.outputs.MD5_CACHE_KEY }}-${{ env.CACHE_NUMBER }}
       - name: Install miniconda
         uses: conda-incubator/setup-miniconda@v2
         with:
@@ -63,3 +66,43 @@ jobs:
           TOX_PARALLEL_NO_SPINNER: 1
         run: |
           tox --parallel --develop
+      - name: Archive tox logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: tox-logs
+          path: tox_logs/*
+
+  release:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    needs:
+      - commitlint
+      - tests
+    outputs:
+      semantic-version: ${{ steps.get-semantic-version.outputs.VERSION }}
+    concurrency: release
+    permissions:
+      # to grant the user triggering the CI permission to push a new Release
+      contents: write
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: 'master'
+      - name: Add SSH key for releasing
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          # a deploy key is needed because only the Admin users have permission to write to the protected main branch
+          # if this CI is triggered by another user's PR, because the main branch is protected the CI won't be able to
+          # push the auto-generated commits that python-semantic-release does
+          ssh-private-key: |
+            ${{ secrets.SP_AUTO_DEPLOY_KEY_UNITY_YAML_PARSER_UNITY_YAML_PARSER }}
+      - name: Python Semantic Release
+        if: github.repository == 'socialpoint-labs/sp-unity-yaml-parser'
+        uses: relekang/python-semantic-release@v7.24.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository_username: __token__
+          repository_password: ${{ secrets.PYPI_TOKEN }}

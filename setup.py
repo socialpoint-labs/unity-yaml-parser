@@ -16,6 +16,11 @@ with io.open('unityparser/__init__.py', 'rt', encoding='utf8') as f:
         re.MULTILINE
     ).group(1)
 
+requirements = {'base': None, 'test': None, 'ci': None}
+for k in requirements:
+    with open("requirements/{}.txt".format(k)) as f:
+        requirements[k] = list(filter(lambda x: bool(x.strip()) and not x.strip().startswith('-r '), f.read().splitlines()))
+
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
@@ -32,18 +37,8 @@ setup(
     python_requires='>=3.6.0',
     packages=['unityparser'],
     keywords=['unity', 'yaml', 'parser', 'serializer'],
-    install_requires=[
-        'PyYAML==5.4',
-    ],
-    extras_require={
-        'test': [
-            'pytest-cov~=2.7',
-            'pytest~=4.5'
-        ],
-        'ci': [
-            'tox~=3.24'
-        ]
-    },
+    install_requires=requirements.pop('base'),
+    extras_require=requirements,
     classifiers=[
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3 :: Only',

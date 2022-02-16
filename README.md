@@ -1,5 +1,4 @@
 # Unity YAML Parser #
-![travis](https://travis-ci.org/socialpoint-labs/unity-yaml-parser.svg?branch=master)
 
 This project aims to provide a python3 API to load and dump Unity YAML 
 files(configurations, prefabs, scenes, serialized data, etc) in the exact same 

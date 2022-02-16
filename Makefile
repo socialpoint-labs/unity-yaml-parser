@@ -16,13 +16,28 @@ clean-dist:
 	find dist -name '*.tar.gz' -exec rm -f {} +
 	find dist -name '*.whl' -exec rm -f {} +
 
+checkout:
+	git checkout main
+
 deploy-loc:
 	python setup.py build
 	python setup.py install
 
-update-changelog:
-	npx conventional-changelog -p angular -k config/package.json -i CHANGELOG.md -s
+lint:
+	git fetch
+	npx commitlint --from 'main'
 
-release: clean-dist
+check-gh-env:
+ifndef GH_TOKEN
+	$(error GH_TOKEN is undefined)
+endif
+
+check-pypi-env:
+ifndef REPOSITORY_PASSWORD
+	$(error REPOSITORY_PASSWORD, the API Token used to publish to Pypi, is undefined)
+endif
+
+release: REPOSITORY_USER := __token__
+release: check-gh-env check-pypi-env clean-dist checkout lint
 	python setup.py sdist bdist_wheel
-	twine upload dist/*
+	semantic-release publish
