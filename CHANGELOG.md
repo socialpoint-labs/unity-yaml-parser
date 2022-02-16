@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v2.1.1 (2022-02-16)
+
+
+**[See all commits in this version](https://github.com/socialpoint-labs/unity-yaml-parser/compare/v2.1.0...v2.1.1)**
+
 ## v2.0.0 (2021-05-03)
 ### Feature
 * **representer:** Save string representation ([`6b2bb15`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/6b2bb150557fb7a13faba5bd7699722239762fa6))
