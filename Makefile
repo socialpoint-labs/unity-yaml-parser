@@ -13,8 +13,8 @@ clean-pyc:
 	find . -name '*~' -exec rm -f {} +
 
 clean-dist:
-	find dist -name '*.tar.gz' -exec rm -f {} +
-	find dist -name '*.whl' -exec rm -f {} +
+	find dist -name '*.tar.gz' -exec rm -f {} + || true
+	find dist -name '*.whl' -exec rm -f {} + || true
 
 checkout:
 	git checkout main
