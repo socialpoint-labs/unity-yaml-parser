@@ -71,7 +71,8 @@ Use the issue tracker for this:
 
 - Install unityparser requirements with development dependencies::
   ```
-  pip install -r requirements/test.txt"
+  pip install -r requirements/test.txt
+  npm install .
   ```
 
 [GitHub account]: https://github.com/join
@@ -123,6 +124,13 @@ coverage html
 Read more about [coverage](https://coverage.readthedocs.io).
 
 
+### Checking commit correctness ###
+
+The Makefile provides an utility to check that your commits adhere to the below commit specification before opening a PR::
+```
+make lint
+```
+
 ### Semantic versioning ###
 
 Unityparser follows the 2.0.0 specification of Semantic Versioning. All version number should follow the following format::
@@ -168,10 +176,20 @@ It's also important to specify which commits include breaking changes in the com
 Read more about [AngularJS commit convention](https://gist.github.com/stephenparish/9941e89d80e2bc58a153/).
 
 
+### Manually releasing a new version to Pypi ###
+
+Only Admins of the repository have the ability to manually release a new version and publish it to Pypi.
+To do so follow the below steps in addition to the environment setup for development described above::
+````
+pip install -r requirements/publish.txt
+GH_TOKEN=<Personal API Token for Github with repo permission> \
+  REPOSITORY_PASSWORD=<unity-yaml-parser Pypi API Token> \
+  make release
+````
+
 ### make targets ###
 
-Unityparser provides a `Makefile` with various shortcuts. They will ensure that
-all dependencies are installed.
+Unityparser provides a `Makefile` with various shortcuts.
 
 - `make test` runs the basic test suite with `pytest`
 - `make cov` runs the basic test suite with `coverage`
