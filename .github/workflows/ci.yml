@@ -81,17 +81,28 @@ jobs:
       - tests
     outputs:
       semantic-version: ${{ steps.get-semantic-version.outputs.VERSION }}
+    concurrency: release
+    permissions:
+      # to grant the user triggering the CI permission to push a new Release
+      contents: write
     steps:
       - name: Checkout project
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
           ref: 'master'
+      - name: Add SSH key for releasing
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          # a deploy key is needed because only the Admin users have permission to write to the protected main branch
+          # if this CI is triggered by another user's PR, because the main branch is protected the CI won't be able to
+          # push the auto-generated commits that python-semantic-release does
+          ssh-private-key: |
+            ${{ secrets.SP_AUTO_DEPLOY_KEY_UNITY_YAML_PARSER_UNITY_YAML_PARSER }}
       - name: Python Semantic Release
         if: github.repository == 'socialpoint-labs/sp-unity-yaml-parser'
-        uses: relekang/python-semantic-release@3c97d933e06d3ac719d3df79843ba068b3e95c52 # v7.15.5
+        uses: relekang/python-semantic-release@v7.24.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get sp-unity-yaml-parser version
-        run: echo ::set-output name=VERSION::$(cat ./version.txt)
-        id: get-semantic-version
+          repository_username: __token__
+          repository_password: ${{ secrets.PYPI_TOKEN }}
