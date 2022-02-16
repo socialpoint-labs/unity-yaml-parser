@@ -100,7 +100,7 @@ jobs:
           ssh-private-key: |
             ${{ secrets.SP_AUTO_DEPLOY_KEY_UNITY_YAML_PARSER_UNITY_YAML_PARSER }}
       - name: Python Semantic Release
-        if: github.repository == 'socialpoint-labs/sp-unity-yaml-parser'
+        if: github.repository == 'socialpoint-labs/unity-yaml-parser'
         uses: relekang/python-semantic-release@v7.24.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
