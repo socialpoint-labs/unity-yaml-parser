@@ -91,18 +91,25 @@ jobs:
         with:
           fetch-depth: 0
           ref: 'main'
+      # a deploy key is needed because only the Admin users have permission to write to the protected main branch
+      # if this CI is triggered by another user's PR, because the main branch is protected the CI won't be able to
+      # push the auto-generated commits that python-semantic-release does
       - name: Add SSH key for releasing
         uses: webfactory/ssh-agent@v0.5.4
         with:
-          # a deploy key is needed because only the Admin users have permission to write to the protected main branch
-          # if this CI is triggered by another user's PR, because the main branch is protected the CI won't be able to
-          # push the auto-generated commits that python-semantic-release does
           ssh-private-key: |
             ${{ secrets.SP_AUTO_DEPLOY_KEY_UNITY_YAML_PARSER_UNITY_YAML_PARSER }}
+      # we cannot use python-semantic-release as a Github Action because it is executed inside a Docker image and
+      # it does not work with the previous action, ssh-agent and we cannot use deploy keys
       - name: Python Semantic Release
         if: github.repository == 'socialpoint-labs/unity-yaml-parser'
-        uses: relekang/python-semantic-release@v7.24.0
+        uses: actions/setup-python@v2
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY_USERNAME: __token__
+          REPOSITORY_PASSWORD: ${{ secrets.PYPI_TOKEN }}
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          repository_username: __token__
-          repository_password: ${{ secrets.PYPI_TOKEN }}
+          python-version: '3.9.x'
+          run: |
+            pip install requirements/publish.txt
+            semantic-release publish
