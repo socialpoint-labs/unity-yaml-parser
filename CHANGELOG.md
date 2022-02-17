@@ -3,9 +3,24 @@
 <!--next-version-placeholder-->
 
 ## v2.1.1 (2022-02-16)
+### Feature
+* **Makefile:** Add lint and release steps ([`33a84ee`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/33a84eee00469a68495b67c4d41b9cab4cb9849d))
+* **deploy:** Add publishing requirements ([`017a8da`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/017a8dae201876c30b1ac9bc48ea9797dcbdc636))
+* **ci:** Enable pypi publishing ([`5564eb8`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/5564eb8e53922e21a17952076dfe7a79997e21ba))
+* **ci:** Archive logs on failure ([`35a1170`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/35a11709a62293ee1149094cb62e10b15353c126))
+* **ci:** Add GH Actions CI ([`79f9869`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/79f98697b5d23119b7ef50724a586597ceb50931))
 
+### Fix
+* **version:** Manually bump version ([`f6db941`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/f6db94179a5eaa74b21c95d4a24182429c3754f1))
+* **deploy:** Use correct release branch ([`2fd9225`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/2fd9225fef398128a529d931a1cab147dd004508))
+* **ci:** Taget correct branch on release ([`d7505c1`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/d7505c16e895905014aecdf3c45c2eecb09206ca))
+* **requirements:** Flexible requirement files ([`4bd47d5`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/4bd47d53ef1be9b19d1f89258e9a6d6f957a3c71))
+* **ci:** Uses actions ([`3a0341e`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/3a0341e9fefc6c9cd641ea72549d1f019f90d82d))
 
-**[See all commits in this version](https://github.com/socialpoint-labs/unity-yaml-parser/compare/v2.1.0...v2.1.1)**
+### Documentation
+* **CONTRIBUTING:** Updated rules ([`41ecab0`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/41ecab067d54742a94d9f8069894cc93aba29351))
+
+**[See all commits in this version](https://github.com/socialpoint-labs/unity-yaml-parser/compare/v2.0.0...v2.1.1)**
 
 ## v2.0.0 (2021-05-03)
 ### Feature
