@@ -2,6 +2,20 @@
 
 <!--next-version-placeholder-->
 
+## v2.1.2 (2022-02-18)
+### Fix
+* **ci:** Hopefully ran publish step #4 ([`3f4977b`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/3f4977bc82efc7619d37a94563c8c321e2328e80))
+* **ci:** Hopefully ran publish step #3 ([`619c1b2`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/619c1b2ecbd83ed4ce7c35fd814e2b798fe6718d))
+* **ci:** Hopefully ran publish step #2 ([`6c3f77d`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/6c3f77dfdf0ef5a475ed171f280b6862b2ef66ab))
+* **ci:** Hopefully ran publish step ([`d62cf73`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/d62cf7301d447aa58f9a05d62eb98e04a7c8bca2))
+* **Makefile:** Continue on dist prune error ([`0f9172e`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/0f9172ea8ce00e0a36060ced7a3e94782dde213d))
+* **ci:** Correct release condittional ([`43179a0`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/43179a05e19d779b8998a0be48183623bbc6450f))
+
+### Documentation
+* **CHANGELOG:** Fix missing commits ([`dfcdb40`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/dfcdb400b81b8c5ee7db6e0339ac8845d35e9185))
+
+**[See all commits in this version](https://github.com/socialpoint-labs/unity-yaml-parser/compare/v2.1.1...v2.1.2)**
+
 ## v2.1.1 (2022-02-16)
 ### Feature
 * **Makefile:** Add lint and release steps ([`33a84ee`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/33a84eee00469a68495b67c4d41b9cab4cb9849d))
