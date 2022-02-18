@@ -107,6 +107,10 @@ jobs:
       # it does not work with the previous action, ssh-agent and we cannot use deploy keys
       - name: Run semantic releases
         if: github.repository == 'socialpoint-labs/unity-yaml-parser'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY_USERNAME: __token__
+          REPOSITORY_PASSWORD: ${{ secrets.PYPI_TOKEN }}
         run: |
           pip install -r requirements/publish.txt
           git config --global user.email "github@action.com"
