@@ -104,7 +104,6 @@ jobs:
       # we cannot use python-semantic-release as a Github Action because it is executed inside a Docker image and
       # it does not work with the previous action, ssh-agent and we cannot use deploy keys
       - name: Run semantic releases
-        if: github.repository == 'socialpoint-labs/unity-yaml-parser'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPOSITORY_USERNAME: __token__
