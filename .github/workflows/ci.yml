@@ -109,4 +109,6 @@ jobs:
         if: github.repository == 'socialpoint-labs/unity-yaml-parser'
         run: |
           pip install -r requirements/publish.txt
+          git config --global user.email "github@action.com"
+          git config --global user.name "Github Action"
           semantic-release publish
