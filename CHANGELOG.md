@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v2.1.4 (2022-02-18)
+### Fix
+* **ci:** Debug stuff ([`6250afb`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/6250afb3e7f1ee37b836220d4b710340a226bb7f))
+
+**[See all commits in this version](https://github.com/socialpoint-labs/unity-yaml-parser/compare/v2.1.3...v2.1.4)**
+
 ## v2.1.3 (2022-02-18)
 ### Fix
 * **ci:** Debug stuff ([`d7ae09c`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/d7ae09cc776da46d5a166a859713b6fec028572f))
