@@ -79,8 +79,6 @@ jobs:
     needs:
       - commitlint
       - tests
-    outputs:
-      semantic-version: ${{ steps.get-semantic-version.outputs.VERSION }}
     concurrency: release
     permissions:
       # to grant the user triggering the CI permission to push a new Release
