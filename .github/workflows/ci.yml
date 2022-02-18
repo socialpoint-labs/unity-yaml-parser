@@ -108,5 +108,5 @@ jobs:
       - name: Run semantic releases
         if: github.repository == 'socialpoint-labs/unity-yaml-parser'
         run: |
-          pip install requirements/publish.txt
+          pip install -r requirements/publish.txt
           semantic-release publish
