@@ -2,6 +2,23 @@
 
 <!--next-version-placeholder-->
 
+## v2.1.6 (2022-02-21)
+### Fix
+* **ci:** Test protected branch ([`6e0445f`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/6e0445f2a49a0d6506365c8ca4ad4b8d9f6ab950))
+* **ci:** Test protected branch ([`8cb6593`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/8cb65937bea1fca993883664429764c738ac07ad))
+* **ci:** Test protected branch ([`7523eba`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/7523eba7f496734004ba3870669c89ddadc46b42))
+* **ci:** Test protected branch ([`d0a703c`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/d0a703c3d32712d6a42c9e61e1d3c250c8c22edf))
+* **ci:** Test protected branch ([`a143d28`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/a143d282254b25d6f44b05f91db7b77a20c4690f))
+* **ci:** Test protected branch ([`9b6d53e`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/9b6d53e1f6f475bac71da215f4fd1bee39c225fa))
+* **ci:** Test protected branch ([`82a0147`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/82a014711975cff00cfde9b2b337e425c23492c4))
+* **ci:** Test protected branch ([`739020b`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/739020bda3e1f2f4b2e8fd512fa64468aae269a7))
+* **ci:** Test protected branch ([`68e8cdb`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/68e8cdb1bccfef6b30c3b95ab2f71fcfb898c801))
+* **ci:** Test protected branch ([`1240921`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/12409218541fb24595a3af693649d83aa4862735))
+* **ci:** Test protected branch ([`0933609`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/0933609ac958243d784002fe57385c6001958f6a))
+* **ci:** Test protected branch ([`50f73cb`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/50f73cbf168fc742de3564f1386566cc509e60f8))
+
+**[See all commits in this version](https://github.com/socialpoint-labs/unity-yaml-parser/compare/v2.1.5...v2.1.6)**
+
 ## v2.1.5 (2022-02-21)
 ### Fix
 * **ci:** Test protected branch ([`b873289`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/b8732893fd658ed79e299606f3c56ad0cd52e885))
