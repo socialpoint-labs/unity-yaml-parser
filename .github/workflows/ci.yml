@@ -44,6 +44,7 @@ jobs:
         run: |
           cat ~/.ssh/known_hosts
           cat ~/.ssh/config
+          git config -l
           pip install -r requirements/publish.txt
           git config --global user.email "github@action.com"
           git config --global user.name "Github Action"
