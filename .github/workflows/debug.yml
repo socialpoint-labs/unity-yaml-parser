@@ -4,18 +4,11 @@ on:
   push:
     branches:
       - protected
-  pull_request:
-    branches:
-      - protected
 
 jobs:
+
   release:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/protected' && github.event_name == 'push'
-    concurrency: release
-    permissions:
-      # to grant the user triggering the CI permission to push a new Release
-      contents: write
     steps:
       # a deploy key is needed because only the Admin users have permission to write to the protected main branch
       # if this CI is triggered by another user's PR, because the main branch is protected the CI won't be able to
@@ -33,14 +26,8 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.4
         with:
           ssh-private-key: |
-            ${{ secrets.SP_AUTO_DEPLOY_KEY_UNITY_YAML_PARSER_UNITY_YAML_PARSER }}
-      # we cannot use python-semantic-release as a Github Action because it is executed inside a Docker image and
-      # it does not work with the previous action, ssh-agent and we cannot use deploy keys
+            ${{ secrets.TEST_DEPLOY_KEY }}
       - name: Run semantic releases
-        env:
-          GH_TOKEN: "bla"
-          REPOSITORY_USERNAME: __token__
-          REPOSITORY_PASSWORD: "blu"
         run: |
           pip install -r requirements/publish.txt
           git config --global user.email "github@action.com"
