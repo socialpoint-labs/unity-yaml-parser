@@ -42,6 +42,8 @@ jobs:
           REPOSITORY_USERNAME: __token__
           REPOSITORY_PASSWORD: "blu"
         run: |
+          cat ~/.ssh/known_hosts
+          cat ~/.ssh/config
           pip install -r requirements/publish.txt
           git config --global user.email "github@action.com"
           git config --global user.name "Github Action"
