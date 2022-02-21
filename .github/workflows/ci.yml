@@ -15,7 +15,7 @@ jobs:
     concurrency: release
     permissions:
       # to grant the user triggering the CI permission to push a new Release
-      contents: write
+      contents: read
     steps:
       # a deploy key is needed because only the Admin users have permission to write to the protected main branch
       # if this CI is triggered by another user's PR, because the main branch is protected the CI won't be able to
