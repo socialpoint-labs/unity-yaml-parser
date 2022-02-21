@@ -33,7 +33,7 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.4
         with:
           ssh-private-key: |
-            ${{ secrets.WRONG_SSH_KEY }}
+            ${{ secrets.SP_AUTO_DEPLOY_KEY_UNITY_YAML_PARSER_UNITY_YAML_PARSER }}
       # we cannot use python-semantic-release as a Github Action because it is executed inside a Docker image and
       # it does not work with the previous action, ssh-agent and we cannot use deploy keys
       - name: Run semantic releases
