@@ -38,7 +38,6 @@ jobs:
       # it does not work with the previous action, ssh-agent and we cannot use deploy keys
       - name: Run semantic releases
         env:
-          GH_TOKEN: "bla"
           REPOSITORY_USERNAME: __token__
           REPOSITORY_PASSWORD: "blu"
         run: |
@@ -49,5 +48,4 @@ jobs:
           pip install -r requirements/publish.txt
           git config --global user.email "github@action.com"
           git config --global user.name "Github Action"
-          GIT_SSH_COMMAND="ssh -vv" git push
           semantic-release publish
