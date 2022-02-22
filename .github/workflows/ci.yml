@@ -32,7 +32,7 @@ jobs:
       - name: Provision ssh
         run: |
           apt-get update
-          apt-get install openssh-client
+          apt-get install openssh-client -y
       - name: Add SSH key for releasing
         uses: webfactory/ssh-agent@v0.5.4
         with:
