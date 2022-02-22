@@ -16,6 +16,10 @@ jobs:
     permissions:
       # to grant the user triggering the CI permission to submit a new GitHub Release
       contents: read
+    container:
+      image: ubuntu-latest
+      volumes:
+        - "~/.ssh:~/.ssh"
     steps:
       # a deploy key is needed because only the Admin users(or deploy keys) have permission to write to the protected
       # main branch if this CI is triggered by another user's PR, because the main branch is protected the CI won't be
