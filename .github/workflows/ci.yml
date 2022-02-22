@@ -29,6 +29,8 @@ jobs:
         with:
           fetch-depth: 0
           ref: 'protected'
+      - name: Provision ssh
+        run: apt-get install openssh-client
       - name: Add SSH key for releasing
         uses: webfactory/ssh-agent@v0.5.4
         with:
