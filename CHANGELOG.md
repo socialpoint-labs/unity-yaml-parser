@@ -2,6 +2,21 @@
 
 <!--next-version-placeholder-->
 
+## v2.1.7 (2022-02-22)
+### Fix
+* **ci:** Test protected branch ([`5c7e951`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/5c7e9511a619add035bc8239483d9dbc70bc5f13))
+* **ci:** Test protected branch ([`a437889`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/a4378899ab9c47a2b2dfaf682e0252b6f09f37af))
+* **ci:** Test protected branch ([`c4a7383`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/c4a73836abf41ed32194930def912a9d5b10acf8))
+* **ci:** Test protected branch ([`f6dbc6c`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/f6dbc6c5ad59f2831d9ef429e21dffbfc2b2fa13))
+* **ci:** Test protected branch ([`2e39358`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/2e39358c54b0cfbe5174edd1a04f2671053048e5))
+* **ci:** Test protected branch ([`282030e`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/282030eaa4962429fd4a16d29ed8460dd4dc8ad0))
+* **ci:** Test protected branch ([`1d9e80b`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/1d9e80bee0057fa0103ab9610360b2e98d0dbea0))
+* **ci:** Test protected branch ([`e92b339`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/e92b33919c2c89e50a47f3c3206dc57655e70248))
+* **ci:** Test protected branch ([`702cb60`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/702cb60329e84c1d79b6e4d5c15ecd8a61b7ca36))
+* **ci:** Test protected branch ([`b8aba68`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/b8aba680c1f63c04b6de17ffaf3bbb6b5aac7374))
+
+**[See all commits in this version](https://github.com/socialpoint-labs/unity-yaml-parser/compare/v2.1.6...v2.1.7)**
+
 ## v2.1.6 (2022-02-21)
 ### Fix
 * **ci:** Test protected branch ([`6e0445f`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/6e0445f2a49a0d6506365c8ca4ad4b8d9f6ab950))
