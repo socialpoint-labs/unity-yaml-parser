@@ -17,6 +17,10 @@ jobs:
       # to grant the user triggering the CI permission to push a new Release
       contents: read
     steps:
+      - name: Install Python for semantic releases
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9.x'
       # a deploy key is needed because only the Admin users have permission to write to the protected main branch
       # if this CI is triggered by another user's PR, because the main branch is protected the CI won't be able to
       # push the auto-generated commits that python-semantic-release does
