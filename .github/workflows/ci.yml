@@ -17,7 +17,7 @@ jobs:
       # to grant the user triggering the CI permission to submit a new GitHub Release
       contents: read
     container:
-      image: ubuntu-latest
+      image: "ubuntu:latest"
       volumes:
         - "~/.ssh:~/.ssh"
     steps:
