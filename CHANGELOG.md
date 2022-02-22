@@ -2,6 +2,16 @@
 
 <!--next-version-placeholder-->
 
+## v2.1.5 (2022-02-22)
+### Fix
+* **ci:** Now correctly using deploy key ([`7b74008`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/7b740084d9575a25f166f5f7c0b15cbd58e5be91))
+* **ci:** Check PR deploy ([`aef6b09`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/aef6b0995b70096ff537d4b2f93144eb9f4813c3))
+* **ci:** Another attempt ([`27a48f9`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/27a48f9458980365216180dd68b163524ffa1488))
+* **ci:** Another attempt ([`2051639`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/2051639763037677d0bf1b379fb18e1fec1dc4df))
+* **ci:** Another attempt ([`977dd5c`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/977dd5c5a855c726f0390f95807d7028edb8b51f))
+
+**[See all commits in this version](https://github.com/socialpoint-labs/unity-yaml-parser/compare/v2.1.4...v2.1.5)**
+
 ## v2.1.4 (2022-02-18)
 ### Fix
 * **ci:** Debug stuff ([`6250afb`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/6250afb3e7f1ee37b836220d4b710340a226bb7f))
