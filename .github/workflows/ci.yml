@@ -41,7 +41,7 @@ jobs:
       - name: Compute cache key
         id: compute-cache-key
         run: |
-           echo "::set-output name=MD5_CACHE_KEY::$(${{ matrix.md5_command }} tox.ini setup.py requirements/*.txt | ${{ matrix.md5_command }} | head -c 32)"
+           echo "::set-output name=MD5_CACHE_KEY::$(${{ matrix.md5_command }} tox.ini setup.py setup.cfg requirements/*.txt | ${{ matrix.md5_command }} | head -c 32)"
       - name: Restore cache
         uses: actions/cache@v2
         id: restore-cache
@@ -49,14 +49,13 @@ jobs:
           CACHE_NUMBER: 0 # increase this number to force invalidate cache
         with:
           path: |
-            ~/conda_pkgs_dir
             .tox
           key: ${{ runner.os }}-${{ steps.compute-cache-key.outputs.MD5_CACHE_KEY }}-${{ env.CACHE_NUMBER }}
       - name: Install miniconda
         uses: conda-incubator/setup-miniconda@v2
         with:
           activate-environment: test
-          python-version: 3.7
+          python-version: 3.9
           use-only-tar-bz2: true
           miniconda-version: latest
       - name: Install tox
@@ -84,9 +83,6 @@ jobs:
       # to grant the user triggering the CI permission to push a new Release
       contents: write
     steps:
-      # a deploy key is needed because only the Admin users have permission to write to the protected main branch
-      # if this CI is triggered by another user's PR, because the main branch is protected the CI won't be able to
-      # push the auto-generated commits that python-semantic-release does
       - name: Install Python for semantic releases
         uses: actions/setup-python@v2
         with:
@@ -96,13 +92,17 @@ jobs:
         with:
           fetch-depth: 0
           ref: 'main'
+      # a deploy key is needed because only the Admin users(and deploy keys) have permission to write to a protected
+      # branch(main). If this CI is triggered by another user's PR, because the main branch is protected and the CI
+      # GITHUB_TOKEN has the triggering user's permissions it won't be able to push the auto-generated commits that
+      # python-semantic-release does unless explicitly using a deploy key to do so
       - name: Add SSH key for releasing
         uses: webfactory/ssh-agent@v0.5.4
         with:
           ssh-private-key: |
             ${{ secrets.SP_AUTO_DEPLOY_KEY_UNITY_YAML_PARSER_UNITY_YAML_PARSER }}
-      # we cannot use python-semantic-release as a Github Action because it is executed inside a Docker image and
-      # it does not work with the previous action, ssh-agent and we cannot use deploy keys
+      # we cannot use python-semantic-release as a GitHub Action because it is executed inside a Docker image, and
+      # it does not work with the previous action which adds deploy ssh keys to the non-containerized environment
       - name: Run semantic releases
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
