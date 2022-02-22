@@ -33,7 +33,6 @@ jobs:
       # we cannot use python-semantic-release as a Github Action because it is executed inside a Docker image and
       # it does not work with the previous action, ssh-agent and we cannot use deploy keys
       - name: Run semantic releases
-        uses: sp-ricard-valverde/python-semantic-release@master
         env:
           GH_TOKEN: "bla"
           REPOSITORY_USERNAME: __token__
