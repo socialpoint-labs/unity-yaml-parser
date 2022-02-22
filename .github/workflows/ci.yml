@@ -29,10 +29,10 @@ jobs:
         with:
           fetch-depth: 0
           ref: 'protected'
-      - name: Provision ssh
+      - name: Provision ssh and git
         run: |
           apt-get update
-          apt-get install openssh-client -y
+          apt-get install openssh-client git -y
       - name: Add SSH key for releasing
         uses: webfactory/ssh-agent@v0.5.4
         with:
