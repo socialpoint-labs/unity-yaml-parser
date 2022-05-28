@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v2.2.0 (2022-05-28)
+### Feature
+* **command:** Allow testing arbitraty files ([`085eb2f`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/085eb2f920bf82fb02d895d8de322e557174361a))
+* **parser:** Fix #32 ([`e300ccf`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/e300ccf3a65c72e07f2e969943368a23bc467293))
+
+**[See all commits in this version](https://github.com/socialpoint-labs/unity-yaml-parser/compare/v2.1.5...v2.2.0)**
+
 ## v2.1.5 (2022-02-22)
 ### Fix
 * **ci:** Now correctly using deploy key ([`7b74008`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/7b740084d9575a25f166f5f7c0b15cbd58e5be91))
