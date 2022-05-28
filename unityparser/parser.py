@@ -1,9 +1,13 @@
-from yaml.events import StreamEndEvent, DocumentStartEvent
+from yaml.events import StreamEndEvent, DocumentStartEvent, MappingEndEvent
 from yaml.parser import Parser as YamlParser, ParserError
-from yaml.tokens import DocumentEndToken, StreamEndToken, DocumentStartToken, StreamStartToken
+from yaml.tokens import DocumentEndToken, StreamEndToken, DocumentStartToken, StreamStartToken, KeyToken, ValueToken, BlockEndToken
 
 
 class Parser(YamlParser):
+
+    def __init__(self):
+        super(Parser, self).__init__()
+        self.parsing_inverted_scalar = False
 
     def parse_document_start(self):
 
@@ -38,4 +42,31 @@ class Parser(YamlParser):
             assert not self.states
             assert not self.marks
             self.state = None
+        return event
+
+    def parse_block_mapping_key(self):
+        if self.check_token(KeyToken):
+            token = self.get_token()
+            if not self.check_token(KeyToken, ValueToken, BlockEndToken):
+                self.states.append(self.parse_block_mapping_value)
+                return self.parse_block_node_or_indentless_sequence()
+            else:
+                self.state = self.parse_block_mapping_value
+                return self.process_empty_scalar(token.end_mark)
+        # UNITY: https://github.com/socialpoint-labs/unity-yaml-parser/issues/32
+        if not self.check_token(BlockEndToken) and not self.parsing_inverted_scalar:
+            if self.check_token(ValueToken):
+                self.get_token()
+                self.parsing_inverted_scalar = True
+                self.states.append(self.parse_block_mapping_value)
+                return self.parse_block_node_or_indentless_sequence()
+            else:
+                token = self.peek_token()
+                raise ParserError("while parsing a block mapping", self.marks[-1],
+                        "expected <block end>, but found %r" % token.id, token.start_mark)
+        token = self.get_token()
+        event = MappingEndEvent(token.start_mark, token.end_mark)
+        self.state = self.states.pop()
+        self.marks.pop()
+        self.parsing_inverted_scalar = False
         return event

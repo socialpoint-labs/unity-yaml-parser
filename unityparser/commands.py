@@ -38,6 +38,10 @@ class UnityProjectTester:
                                 help='Dont\'t modify.',
                                 default=False,
                                 action='store_true')
+        top_parser.add_argument('--suffixes',
+                                help='Look for files with suffixes in this comma-separated list(default: ".asset,.unity,.prefab").',
+                                default='.asset,.unity,.prefab',
+                                action='store_true')
         try:
             self.options = top_parser.parse_args()
         except TypeError:
@@ -48,7 +52,7 @@ class UnityProjectTester:
 
     def test_no_yaml_is_modified(self):
         """
-        Recurse the whole project folder looking for '.asset' files, load and save them all, and check that
+        Recurse the whole project folder looking for serializable files, load and save them all, and check that
         there are no modifications
         """
         if self.options.dry_run:
@@ -59,7 +63,8 @@ class UnityProjectTester:
             print("Keep changes mode enabled: Changes to files will be kept.")
 
         project_path = Path(self.options.project_path)
-        asset_file_paths = [p for p in project_path.rglob('*.asset')]
+        suffixes = [f".{s.strip('.')}" for s in self.options.suffixes.split(',')]
+        asset_file_paths = [p for p in project_path.rglob('*') if p.suffix in suffixes]
         print("Found {} '.asset' files".format(len(asset_file_paths)))
 
         def is_path_included(path):
@@ -69,7 +74,7 @@ class UnityProjectTester:
         if self.options.exclude is not None:
             rexps = [re.compile(rexp) for rexp in self.options.exclude]
             valid_file_paths = [p for p in filter(is_path_included, asset_file_paths)]
-            print("Excluded {} '.asset' files".format(len(asset_file_paths) - len(valid_file_paths)))
+            print("Excluded {} files".format(len(asset_file_paths) - len(valid_file_paths)))
         else:
             valid_file_paths = asset_file_paths
 
