@@ -25,7 +25,7 @@ class UnityDocument:
     def entries(self):
         return self.data
 
-    def dump_yaml(self, file_path=None):
+    def dump_yaml(self, file_path=None, **kwargs):
         """
         :param file_path: If self.file_path is None, it must be passed
         :type file_path:
@@ -35,7 +35,7 @@ class UnityDocument:
         file_path = file_path or self.file_path
         assert_or_raise(file_path is not None, UnityDocumentError("file_path parameter must be passed"))
         with open(file_path, 'w', newline=self.newline) as fp:
-            dump_all(self.data, stream=fp, register=self.register)
+            dump_all(self.data, stream=fp, register=self.register, **kwargs)
 
     @classmethod
     def load_yaml(cls, file_path):
