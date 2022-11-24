@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v2.2.1 (2022-11-24)
+### Fix
+* **ci:** Disable firstParent ([`a2ae5bf`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/a2ae5bf148a0a10b82ca9740bdbf7f3a792a75e0))
+
+**[See all commits in this version](https://github.com/socialpoint-labs/unity-yaml-parser/compare/v2.2.0...v2.2.1)**
+
 ## v2.2.0 (2022-05-28)
 ### Feature
 * **command:** Allow testing arbitraty files ([`085eb2f`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/085eb2f920bf82fb02d895d8de322e557174361a))
