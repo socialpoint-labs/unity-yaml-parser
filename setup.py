@@ -16,9 +16,9 @@ with io.open('unityparser/__init__.py', 'rt', encoding='utf8') as f:
         re.MULTILINE
     ).group(1)
 
-requirements = {'base': None, 'test': None, 'ci': None}
+requirements = {'base': None, 'development': None}
 for k in requirements:
-    with open("requirements/{}.txt".format(k)) as f:
+    with open("requirements/{}.in".format(k)) as f:
         requirements[k] = list(filter(lambda x: bool(x.strip()) and not x.strip().startswith('-r '), f.read().splitlines()))
 
 # allow setup.py to be run from any path
