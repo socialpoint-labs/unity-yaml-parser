@@ -71,7 +71,7 @@ Use the issue tracker for this:
 
 - Install unityparser requirements with development dependencies::
   ```
-  pip install -r requirements/test.txt
+  pip install -r requirements/development.txt
   npm install .
   ```
 

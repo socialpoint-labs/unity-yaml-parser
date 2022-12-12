@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0
       - uses: wagoid/commitlint-github-action@v5
         with:
-          firstParent: false
+          firstParent: falseº
 
   tests:
     runs-on: ${{ matrix.os }}
@@ -33,7 +33,7 @@ jobs:
             md5_command: md5sum
     defaults:
       run:
-        shell: bash -l {0}
+        shell: bash -el {0}
     steps:
       - name: Checkout project
         uses: actions/checkout@v2
@@ -60,8 +60,8 @@ jobs:
           python-version: 3.9
           use-only-tar-bz2: true
           miniconda-version: latest
-      - name: Install tox
-        run: pip install tox
+      - name: Install tox ci
+        run: pip install -r requirements/ci.txt
       - name: Run tests
         env:
           TOX_PARALLEL_NO_SPINNER: 1
