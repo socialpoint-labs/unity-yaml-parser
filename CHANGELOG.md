@@ -2,6 +2,15 @@
 
 <!--next-version-placeholder-->
 
+## v2.2.2 (2023-03-21)
+### Fix
+* **setup:** Add requirements folder to sdist ([`85df55c`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/85df55c91c031bc9544da772ff25431dfa819a9d))
+
+### Documentation
+* **CONTRIBUTING:** Update ([`dec5035`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/dec5035098775daee26bf07ec3df3b3b58449030))
+
+**[See all commits in this version](https://github.com/socialpoint-labs/unity-yaml-parser/compare/v2.2.1...v2.2.2)**
+
 ## v2.2.1 (2022-11-24)
 ### Fix
 * **ci:** Disable firstParent ([`a2ae5bf`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/a2ae5bf148a0a10b82ca9740bdbf7f3a792a75e0))
