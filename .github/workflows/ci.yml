@@ -58,7 +58,6 @@ jobs:
         with:
           activate-environment: test
           python-version: 3.9
-          use-only-tar-bz2: true
           miniconda-version: latest
       - name: Install tox ci
         run: pip install -r requirements/ci.txt
