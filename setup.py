@@ -34,7 +34,7 @@ setup(
     author_email='ricard.valverde@socialpoint.es',
     url='https://github.com/socialpoint-labs/unity-yaml-parser',
     license='MIT License',
-    python_requires='>=3.6.0',
+    python_requires='>=3.7.0',
     packages=['unityparser'],
     keywords=['unity', 'yaml', 'parser', 'serializer'],
     install_requires=requirements.pop('base'),
