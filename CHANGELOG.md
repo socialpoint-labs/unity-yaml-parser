@@ -2,6 +2,15 @@
 
 <!--next-version-placeholder-->
 
+## v3.0.0 (2023-07-21)
+### Feature
+* **deps:** Update pyyaml to 6.0 ([`e989e15`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/e989e15ebe4fd3f6df64a5df7d8b2d6dcb92a94c))
+
+### Breaking
+* Support for Python 3.6 dropped  ([`e989e15`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/e989e15ebe4fd3f6df64a5df7d8b2d6dcb92a94c))
+
+**[See all commits in this version](https://github.com/socialpoint-labs/unity-yaml-parser/compare/v2.2.2...v3.0.0)**
+
 ## v2.2.2 (2023-03-21)
 ### Fix
 * **setup:** Add requirements folder to sdist ([`85df55c`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/85df55c91c031bc9544da772ff25431dfa819a9d))
