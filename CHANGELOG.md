@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v3.0.1 (2023-07-26)
+### Fix
+* **dependencies:** Upgrade PyYaml version ([`8e7f163`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/8e7f16386b85f6d843742650ae08c6c6e7085c3f))
+
+**[See all commits in this version](https://github.com/socialpoint-labs/unity-yaml-parser/compare/v3.0.0...v3.0.1)**
+
 ## v3.0.0 (2023-07-21)
 ### Feature
 * **deps:** Update pyyaml to 6.0 ([`e989e15`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/e989e15ebe4fd3f6df64a5df7d8b2d6dcb92a94c))
