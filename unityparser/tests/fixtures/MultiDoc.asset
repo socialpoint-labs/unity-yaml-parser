@@ -58,6 +58,19 @@ MonoBehaviour:
   fullBlinks: 3
   interpolation: 4
   pieceType: 2
+  f1: 0.000001
+  f2: 0.0000001
+  f3: 0.00000001
+  f4: 0.000000001
+  f5: -0.7071068
+  f6: 0.7071068
+  f7: 0.00000011920929
+  f8: 0.231
+  f9: 0.0423
+  f10: 1e+10
+  f11: 1e+28
+  f12: 1e-11
+  f13: 1.1111111e-11
 --- !u!212 &212685313502090504
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -60,7 +60,15 @@ def represent_str(dumper, instance):
     return dumper.represent_scalar('tag:yaml.org,2002:str', instance, style=style)
 
 
+def represent_float(dumper, instance):
+    float_str = str(instance)
+    if 'e' in float_str:
+        float_str = format(instance, '.17f').rstrip('0')
+    return dumper.represent_scalar('tag:yaml.org,2002:float', float_str)
+
+
 Representer.add_multi_representer(UnityClass, represent_unity_class)
 Representer.add_representer(OrderedFlowDict, represent_ordered_flow_dict)
 Representer.add_representer(type(None), represent_none)
 Representer.add_representer(uniqstr, represent_str)
+Representer.add_representer(float, represent_float)
