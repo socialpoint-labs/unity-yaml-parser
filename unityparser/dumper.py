@@ -18,10 +18,11 @@ class UnityDumper(Emitter, Serializer, Representer, Resolver):
                  canonical=None, indent=None, width=None,
                  allow_unicode=None, line_break=None,
                  encoding=None, explicit_start=None, explicit_end=None,
-                 version=None, tags=None, sort_keys=True, register=None):
-        tags = tags or {}
-        tags.update(UNITY_TAG)
-        version = version or VERSION
+                 version=None, tags=None, sort_keys=True, register=None, is_meta_file=False):
+        if not is_meta_file:
+            tags = tags or {}
+            tags.update(UNITY_TAG)
+            version = version or VERSION
         Emitter.__init__(self, stream, canonical=canonical,
                          indent=indent, width=width,
                          allow_unicode=allow_unicode, line_break=line_break)
