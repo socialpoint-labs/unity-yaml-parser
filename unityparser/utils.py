@@ -1,4 +1,5 @@
 import io
+from copy import copy
 
 from .dumper import UnityDumper
 from .errors import UnityDocumentError
@@ -10,11 +11,13 @@ UNIX_LINE_ENDINGS = '\n'
 
 class UnityDocument:
 
-    def __init__(self, data, newline=None, file_path=None, register=None):
+    def __init__(self, data, newline=None, file_path=None, register=None, version=None, tags=None):
         self.newline = newline
         self.data = data
         self.file_path = file_path
         self.register = register or UnityScalarRegister()
+        self.version = version
+        self.tags = tags
 
     @property
     def entry(self):
@@ -34,17 +37,28 @@ class UnityDocument:
         """
         file_path = file_path or self.file_path
         assert_or_raise(file_path is not None, UnityDocumentError("file_path parameter must be passed"))
+        kwargs_copy = copy(kwargs)
+        if 'version' not in kwargs:
+            kwargs_copy['version'] = self.version
+        if 'tags' not in kwargs:
+            kwargs_copy['tags'] = self.tags
         with open(file_path, 'w', newline=self.newline) as fp:
-            dump_all(self.data, stream=fp, register=self.register, **kwargs)
+            dump_all(self.data, stream=fp, register=self.register, **kwargs_copy)
 
     @classmethod
     def load_yaml(cls, file_path):
         register = UnityScalarRegister()
         with open(file_path, newline='') as fp:
+            loader = UnityLoader(fp)
+            loader.check_data()
+            fp.seek(0)
+            version = loader.yaml_version
+            tags = loader.non_default_tags
             data = [d for d in load_all(fp, register)]
             # use document line endings if no mixed lien endings found, else default to linux
             line_endings = UNIX_LINE_ENDINGS if isinstance(fp.newlines, tuple) else fp.newlines
-        doc = UnityDocument(data, newline=line_endings, file_path=file_path, register=register)
+        doc = UnityDocument(data, newline=line_endings, file_path=file_path, register=register, version=version,
+                            tags=tags)
         return doc
 
     # region Filtering
