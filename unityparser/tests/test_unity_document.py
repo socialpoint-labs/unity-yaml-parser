@@ -30,6 +30,14 @@ class TestUnityDocumentSerialization:
 
         assert base_file_path.read() == dumped_file_path.read()
 
+    def test_preserve_missing_yaml_tags_ok(self, fixtures, tmpdir):
+        base_file_path = py.path.local(fixtures['MetaFileWithoutTags.meta'])
+        doc = UnityDocument.load_yaml(str(base_file_path))
+        dumped_file_path = tmpdir.join('MetaFileWithoutTags.meta')
+        doc.dump_yaml(file_path=str(dumped_file_path))
+
+        assert base_file_path.read() == dumped_file_path.read()
+
 
 class TestUnityDocumentFilters:
 
