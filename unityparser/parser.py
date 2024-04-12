@@ -8,6 +8,7 @@ class Parser(YamlParser):
     def __init__(self):
         super(Parser, self).__init__()
         self.parsing_inverted_scalar = False
+        self.non_default_tags = None
 
     def parse_document_start(self):
 
@@ -22,6 +23,9 @@ class Parser(YamlParser):
             # UNITY: only process directives(version and tags) on the first document
             if self.check_prev_token(StreamStartToken):
                 version, tags = self.process_directives()
+                # UNITY: keep track of tags explicitly defined in the document
+                if self.non_default_tags is None:
+                    self.non_default_tags = tags
             else:
                 version, tags = self.yaml_version, self.tag_handles.copy() if self.tag_handles else None
             if not self.check_token(DocumentStartToken):
