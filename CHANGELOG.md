@@ -2,6 +2,18 @@
 
 <!--next-version-placeholder-->
 
+## v4.0.0 (2024-04-12)
+### Feature
+* **data:** Parse to string by default ([`4a9fd95`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/4a9fd951191a21209333f18d070648f262e0c65c))
+
+### Fix
+* **UnityDocument:** Preserve version and tags ([`59647f7`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/59647f7ce2424ed5437422845b0843643fa99cb8))
+
+### Breaking
+* All data is now deserialized to Python str ([`4a9fd95`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/4a9fd951191a21209333f18d070648f262e0c65c))
+
+**[See all commits in this version](https://github.com/socialpoint-labs/unity-yaml-parser/compare/v3.0.1...v4.0.0)**
+
 ## v3.0.1 (2023-07-26)
 ### Fix
 * **dependencies:** Upgrade PyYaml version ([`8e7f163`](https://github.com/socialpoint-labs/unity-yaml-parser/commit/8e7f16386b85f6d843742650ae08c6c6e7085c3f))
