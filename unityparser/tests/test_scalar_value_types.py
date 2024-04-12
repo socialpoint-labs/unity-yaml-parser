@@ -1,14 +1,13 @@
 import py
-import pytest
 
-from unityparser.utils import UnityDocument, UnityDocumentError
+from unityparser.utils import UnityDocument
 
 
-class TestScalarValueTypes:
+class TestSmartScalarValueTypes:
 
     def test_types(self, fixtures):
         base_file_path = py.path.local(fixtures['MultipleTypesDoc.asset'])
-        doc = UnityDocument.load_yaml(str(base_file_path))
+        doc = UnityDocument.load_yaml(str(base_file_path), try_preserve_types=True)
         multi_types = doc.entry
 
         count_map = {'int': 0, 'str': 0, 'float': 0}
@@ -34,7 +33,7 @@ class TestScalarValueTypes:
 
     def test_sum_int_type(self, fixtures):
         base_file_path = py.path.local(fixtures['MultipleTypesDoc.asset'])
-        doc = UnityDocument.load_yaml(str(base_file_path))
+        doc = UnityDocument.load_yaml(str(base_file_path), try_preserve_types=True)
         multi_types = doc.entry
 
         multi_types.scalar_int_001 += 1
