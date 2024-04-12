@@ -18,17 +18,6 @@ class Resolver(BaseResolver):
 #                     |on|On|ON|off|Off|OFF)$''', re.X),
 #     list('yYnNtTfFoO'))
 
-Resolver.add_implicit_resolver(
-    'tag:yaml.org,2002:float',
-    re.compile(r'''^(?:[-+]?(?:0|[1-9][0-9]*)\.(?:[1-9]|[0-9][0-9]*[1-9])?)$''', re.X),
-    list('-+0123456789.'))
-
-Resolver.add_implicit_resolver(
-    'tag:yaml.org,2002:int',
-    # UNITY: Restrict to simple integer values
-    re.compile(r'''^(?:[-+]?(?:0|[1-9][0-9]*))$''', re.X),
-    list('-+0123456789'))
-
 # Resolver.add_implicit_resolver(
 #     'tag:yaml.org,2002:merge',
 #     re.compile(r'^(?:<<)$'),
@@ -60,3 +49,24 @@ Resolver.add_implicit_resolver(
     'tag:yaml.org,2002:yaml',
     re.compile(r'^(?:!|&|\*)$'),
     list('!&*'))
+
+
+class SmartResolver(Resolver):
+    """
+    A Resolver that tries to be smart about how Unity serializes int and float values, but it's known that does not
+    cover all cases.
+    """
+    pass
+
+
+SmartResolver.add_implicit_resolver(
+    'tag:yaml.org,2002:float',
+    re.compile(r'''^(?:[-+]?(?:0|[1-9][0-9]*)\.(?:[1-9]|[0-9][0-9]*[1-9])?)$''', re.X),
+    list('-+0123456789.'))
+
+SmartResolver.add_implicit_resolver(
+    'tag:yaml.org,2002:int',
+    # UNITY: Restrict to simple integer values
+    re.compile(r'''^(?:[-+]?(?:0|[1-9][0-9]*))$''', re.X),
+    list('-+0123456789'))
+

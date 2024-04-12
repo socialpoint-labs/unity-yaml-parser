@@ -3,7 +3,7 @@ from copy import copy
 
 from .dumper import UnityDumper
 from .errors import UnityDocumentError
-from .loader import UnityLoader
+from .loader import UnityLoader, SmartUnityLoader
 from .register import UnityScalarRegister
 
 UNIX_LINE_ENDINGS = '\n'
@@ -46,15 +46,22 @@ class UnityDocument:
             dump_all(self.data, stream=fp, register=self.register, **kwargs_copy)
 
     @classmethod
-    def load_yaml(cls, file_path):
+    def load_yaml(cls, file_path, try_preserve_types=False):
+        """
+        :param file_path: Path to the file to load
+        :param try_preserve_types: If true, will deserialize what seems to be int and float types to the same Python
+            data types instead of deserializing them all as the string type. When/if this value is later serialized
+            back it might be represented differently in some corner cases.
+        """
+        loader_cls = SmartUnityLoader if try_preserve_types else UnityLoader
         register = UnityScalarRegister()
         with open(file_path, newline='') as fp:
-            loader = UnityLoader(fp)
+            loader = loader_cls(fp)
             loader.check_data()
             fp.seek(0)
             version = loader.yaml_version
             tags = loader.non_default_tags
-            data = [d for d in load_all(fp, register)]
+            data = [d for d in load_all(fp, register, loader_cls)]
             # use document line endings if no mixed lien endings found, else default to linux
             line_endings = UNIX_LINE_ENDINGS if isinstance(fp.newlines, tuple) else fp.newlines
         doc = UnityDocument(data, newline=line_endings, file_path=file_path, register=register, version=version,
@@ -109,12 +116,12 @@ def assert_or_raise(condition, exception):
         raise exception
 
 
-def load_all(stream, register=None):
+def load_all(stream, register=None, loader_cls=UnityLoader):
     """
     Parse all YAML documents in a stream
     and produce corresponding Python objects.
     """
-    loader = UnityLoader(stream, register)
+    loader = loader_cls(stream, register)
     try:
         while loader.check_data():
             yield loader.get_data()

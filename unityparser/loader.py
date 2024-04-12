@@ -5,7 +5,7 @@ from .composer import Composer
 from .constants import UNITY_TAG_URI, OrderedFlowDict, UnityClassIdMap
 from .constructor import Constructor
 from .parser import Parser
-from .resolver import Resolver
+from .resolver import Resolver, SmartResolver
 
 
 class UpgradeVersionError(Exception):
@@ -38,6 +38,17 @@ class UnityLoader(Reader, Scanner, Parser, Composer, Constructor, Resolver):
         Resolver.__init__(self)
 
 
+class SmartUnityLoader(Reader, Scanner, Parser, Composer, Constructor, SmartResolver):
+
+    def __init__(self, stream, register=None):
+        Reader.__init__(self, stream)
+        Scanner.__init__(self)
+        Parser.__init__(self)
+        Composer.__init__(self)
+        Constructor.__init__(self, register)
+        SmartResolver.__init__(self)
+
+
 def construct_unity_class(loader, tag_suffix, node):
     try:
         classid = tag_suffix
@@ -66,3 +77,5 @@ def construct_yaml_map(loader, node):
 
 UnityLoader.add_constructor('tag:yaml.org,2002:map', construct_yaml_map)
 UnityLoader.add_multi_constructor(UNITY_TAG_URI, construct_unity_class)
+SmartUnityLoader.add_constructor('tag:yaml.org,2002:map', construct_yaml_map)
+SmartUnityLoader.add_multi_constructor(UNITY_TAG_URI, construct_unity_class)
