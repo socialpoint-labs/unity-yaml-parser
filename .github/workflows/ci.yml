@@ -71,7 +71,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tox-logs-${{ matrix.runs-on }}
-          path: tox_logs-${{ matrix.runs-on }}/*
+          path: tox_logs/*
           include-hidden-files: true
           overwrite: true
 
