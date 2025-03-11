@@ -154,6 +154,7 @@ def dump_all(documents, stream=None, default_style=None,
                          explicit_start=explicit_start,
                          explicit_end=explicit_end,
                          sort_keys=sort_keys, register=register)
+    dumper.ignore_aliases = lambda *args: True
     try:
         dumper.open()
         for data in documents:
