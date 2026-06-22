@@ -18,10 +18,13 @@ class UnityDumper(Emitter, Serializer, Representer, Resolver):
                  canonical=None, indent=None, width=None,
                  allow_unicode=None, line_break=None,
                  encoding=None, explicit_start=None, explicit_end=None,
-                 version=None, tags=None, sort_keys=True, register=None):
+                 version=None, tags=None, sort_keys=True, register=None,
+                 serialize_inline_mappings_on_one_line=False):
         Emitter.__init__(self, stream, canonical=canonical,
                          indent=indent, width=width,
                          allow_unicode=allow_unicode, line_break=line_break)
+        # mirrors Unity's EditorSettings.serializeInlineMappingsOnOneLine
+        self.serialize_inline_mappings_on_one_line = serialize_inline_mappings_on_one_line
         Serializer.__init__(self, encoding=encoding,
                             explicit_start=explicit_start, explicit_end=explicit_end,
                             version=version, tags=tags)

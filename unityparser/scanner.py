@@ -1,4 +1,4 @@
-from yaml.scanner import Scanner as YamlScanner
+from yaml.scanner import Scanner as YamlScanner, ScannerError
 from yaml.tokens import AnchorToken
 
 
@@ -9,6 +9,31 @@ class Scanner(YamlScanner):
 
         # keep track of previous tokens
         self.prev_tokens = []
+
+    def scan_flow_scalar_spaces(self, double, start_mark):
+        # UNITY: keep significant whitespace before a fold (standard YAML drops it, losing content)
+        chunks = []
+        length = 0
+        while self.peek(length) in ' \t':
+            length += 1
+        whitespaces = self.prefix(length)
+        self.forward(length)
+        ch = self.peek()
+        if ch == '\0':
+            raise ScannerError("while scanning a quoted scalar", start_mark,
+                               "found unexpected end of stream", self.get_mark())
+        elif ch in '\r\n\x85  ':
+            chunks.append(whitespaces)            # UNITY: keep, do not drop
+            line_break = self.scan_line_break()
+            breaks = self.scan_flow_scalar_breaks(double, start_mark)
+            if line_break != '\n':
+                chunks.append(line_break)
+            elif not breaks:
+                chunks.append(' ')
+            chunks.extend(breaks)
+        else:
+            chunks.append(whitespaces)
+        return chunks
 
     def check_prev_token(self, *choices):
         # Check if the previous token is one of the given types.
