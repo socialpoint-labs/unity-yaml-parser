@@ -134,7 +134,8 @@ def dump_all(documents, stream=None, default_style=None,
              canonical=None, indent=None, width=None,
              allow_unicode=None, line_break=None,
              encoding=None, explicit_start=None, explicit_end=None,
-             version=None, tags=None, sort_keys=True, register=None):
+             version=None, tags=None, sort_keys=True, register=None,
+             serialize_inline_mappings_on_one_line=False):
     """
     Serialize a sequence of Python objects into a YAML stream.
     If stream is None, return the produced string instead.
@@ -153,7 +154,8 @@ def dump_all(documents, stream=None, default_style=None,
                          encoding=encoding, version=version, tags=tags,
                          explicit_start=explicit_start,
                          explicit_end=explicit_end,
-                         sort_keys=sort_keys, register=register)
+                         sort_keys=sort_keys, register=register,
+                         serialize_inline_mappings_on_one_line=serialize_inline_mappings_on_one_line)
     try:
         dumper.open()
         for data in documents:

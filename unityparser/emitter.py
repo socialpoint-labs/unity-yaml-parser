@@ -11,9 +11,35 @@ from yaml.events import (
     MappingStartEvent)
 
 
+# UNITY editor scalar wrap widths
+PLAIN_WIDTH = 79
+SINGLE_WIDTH = 80
+DOUBLE_WIDTH = 79
+
+
 class Emitter(YamlEmitter):
 
+    def _write_built(self, data):
+        # write a pre-folded chunk and resync state (column = chars after last LF)
+        if not data:
+            return
+        nl = data.rfind('\n')
+        if nl >= 0:
+            self.line += data.count('\n')
+            self.column = len(data) - nl - 1
+        else:
+            self.column += len(data)
+        if self.encoding:
+            data = data.encode(self.encoding)
+        self.stream.write(data)
+        self.whitespace = False
+        self.indention = False
+
     def expect_document_start(self, first=False):
+        # UNITY: serializeInlineMappingsOnOneLine -> never wrap flow collections (scalars fold on
+        # their own widths, so best_width only affects flow here)
+        if getattr(self, 'serialize_inline_mappings_on_one_line', False):
+            self.best_width = 1 << 30
         if isinstance(self.event, DocumentStartEvent):
             # UNITY: omit document end separator
             # if (self.event.version or self.event.tags) and self.open_ended:
@@ -84,118 +110,136 @@ class Emitter(YamlEmitter):
         else:
             raise EmitterError("expected NodeEvent, but got %s" % self.event)
 
+    def choose_scalar_style(self):
+        # UNITY: emit empty (`{class: , }`) and `...`/`---` values plain, not quoted/tagged
+        if self.event.style is None and self.event.implicit[0] and (
+                self.event.value == '' or self.event.value in ('...', '---')):
+            return ''
+        return super().choose_scalar_style()
+
     def write_plain(self, text, split=True):
+        # UNITY: break at a space iff column > width and it's the last space of its run; the break
+        # consumes it, earlier spaces stay as significant trailing whitespace
         if self.root_context:
             self.open_ended = True
-        # UNITY: empty values contain a whitespace before line break
-        # if not text:
-        #     return
+        out = []
+        col = self.column
         if not self.whitespace:
-            data = ' '
-            self.column += len(data)
-            if self.encoding:
-                data = data.encode(self.encoding)
-            self.stream.write(data)
-        self.whitespace = False
-        self.indention = False
-        spaces = False
-        breaks = False
-        start = end = 0
-        while end <= len(text):
-            ch = None
-            if end < len(text):
-                ch = text[end]
-            if spaces:
-                if ch != ' ':
-                    if start+1 == end and self.column > self.best_width and split:
-                        self.write_indent()
-                        self.whitespace = False
-                        self.indention = False
-                    else:
-                        data = text[start:end]
-                        self.column += len(data)
-                        if self.encoding:
-                            data = data.encode(self.encoding)
-                        self.stream.write(data)
-                    start = end
-            elif breaks:
-                if ch not in '\n\x85\u2028\u2029':
-                    if text[start] == '\n':
-                        self.write_line_break()
-                    for br in text[start:end]:
-                        if br == '\n':
-                            self.write_line_break()
-                        else:
-                            self.write_line_break(br)
-                    self.write_indent()
-                    self.whitespace = False
-                    self.indention = False
-                    start = end
-            else:
-                if ch is None or ch in ' \n\x85\u2028\u2029':
-                    data = text[start:end]
-                    self.column += len(data)
-                    if self.encoding:
-                        data = data.encode(self.encoding)
-                    self.stream.write(data)
-                    start = end
-            if ch is not None:
-                spaces = (ch == ' ')
-                breaks = (ch in '\n\x85\u2028\u2029')
-            end += 1
+            out.append(' ')
+            col += 1
+        if text:
+            indent = ' ' * (self.indent or 0)
+            n = len(text)
+            for i, ch in enumerate(text):
+                if (ch == ' ' and split and col > PLAIN_WIDTH
+                        and not (i + 1 < n and text[i + 1] == ' ')):
+                    out.append('\n' + indent)
+                    col = len(indent)
+                else:
+                    out.append(ch)
+                    col += 1
+        self._write_built(''.join(out))
 
     def write_double_quoted(self, text, split=True):
+        # UNITY: only fold when the content has an escaped char (pure-ASCII stays one line)
         self.write_indicator('"', True)
-        start = end = 0
-        while end <= len(text):
-            ch = None
-            if end < len(text):
-                ch = text[end]
-            if ch is None or ch in '"\\\x85\u2028\u2029\uFEFF' \
+        ER = self.ESCAPE_REPLACEMENTS
+        au = self.allow_unicode
+
+        def needs_escape(ch):
+            return (ch in '"\\\x85\u2028\u2029\uFEFF' or ch == '\t'
                     or not ('\x20' <= ch <= '\x7E'
-                        or (self.allow_unicode
-                            and ('\xA0' <= ch <= '\uD7FF'
-                                or '\uE000' <= ch <= '\uFFFD'))):
-                if start < end:
-                    data = text[start:end]
-                    self.column += len(data)
-                    if self.encoding:
-                        data = data.encode(self.encoding)
-                    self.stream.write(data)
-                    start = end
-                if ch is not None:
-                    if ch in self.ESCAPE_REPLACEMENTS:
-                        data = '\\'+self.ESCAPE_REPLACEMENTS[ch]
-                    elif ch <= '\xFF':
-                        data = '\\x%02X' % ord(ch)
-                    elif ch <= '\uFFFF':
-                        data = '\\u%04X' % ord(ch)
-                    else:
-                        data = '\\U%08X' % ord(ch)
-                    self.column += len(data)
-                    if self.encoding:
-                        data = data.encode(self.encoding)
-                    self.stream.write(data)
-                    start = end+1
-            if 0 < end < len(text)-1 and (ch == ' ' or start >= end)    \
-                    and self.column+(end-start) > self.best_width and split:
-                # UNITY: do not append \ at the end of each split line
-                data = text[start:end]
-                if start < end:
-                    start = end
-                self.column += len(data)
-                if self.encoding:
-                    data = data.encode(self.encoding)
-                self.stream.write(data)
-                self.write_indent()
-                self.whitespace = False
-                self.indention = False
-                if text[start] == ' ':
-                    # UNITY: skip leading whitespace on new line
-                    self.column += 1
-                    start += 1
-            end += 1
+                            or (au and ('\xA0' <= ch <= '\uD7FF'
+                                        or '\uE000' <= ch <= '\uFFFD'))))
+
+        allow_breaks = split and any(needs_escape(c) for c in text)
+        indent = ' ' * (self.indent or 0)
+        out = []
+        col = self.column
+        n = len(text)
+        i = 0
+        spaces = False
+        while i < n:
+            ch = text[i]
+            if needs_escape(ch):
+                if ch in ER:
+                    e = '\\' + ER[ch]
+                elif ch <= '\xFF':
+                    e = '\\x%02X' % ord(ch)
+                elif ch <= '\uFFFF':
+                    e = '\\u%04X' % ord(ch)
+                else:
+                    e = '\\U%08X' % ord(ch)
+                out.append(e)
+                col += len(e)
+                i += 1
+                spaces = False
+            elif ch == ' ':
+                # UNITY: break at the last space of a run, keeping earlier ones as trailing
+                last_of_run = not (i + 1 < n and text[i + 1] == ' ')
+                if (allow_breaks and col > DOUBLE_WIDTH and i != 0 and i + 1 != n
+                        and last_of_run):
+                    out.append('\n' + indent)
+                    col = len(indent)
+                    i += 1                    # the break consumes this (last) space
+                else:
+                    out.append(' ')
+                    col += 1
+                    i += 1
+                spaces = True
+            else:
+                out.append(ch)
+                col += 1
+                i += 1
+                spaces = False
+        self._write_built(''.join(out))
         self.write_indicator('"', False)
+
+    def write_single_quoted(self, text, split=True):
+        # UNITY: content newline -> blank line; column accumulates across newlines (first +cont+2,
+        # each extra +1); a fold never splits a space run; trailing \n closes the quote alone at col 0
+        self.write_indicator("'", True)
+        if text == "":
+            self.write_indicator("'", False)
+            return
+        esc = text.replace("'", "''")
+        segments = esc.split("\n")
+        cont = self.indent or 0
+        ind = ' ' * cont
+        width = SINGLE_WIDTH
+        out = []
+        vcol = self.column
+        prev_empty = False
+        for s, seg in enumerate(segments):
+            if s > 0:
+                out.append("")
+                vcol += 1 if prev_empty else cont + 2
+            if seg == "":
+                if s == 0:
+                    out.append("")
+                prev_empty = s != 0
+                continue
+            prev_empty = False
+            cur = "" if s == 0 else ind
+            firstw = True
+            for word in seg.split(" "):
+                if firstw:
+                    cur += word
+                    vcol += len(word)
+                    firstw = False
+                elif word != "" and split and vcol + 1 > width:
+                    out.append(cur)
+                    cur = ind + word
+                    vcol = cont + len(word)
+                else:
+                    cur += " " + word
+                    vcol += 1 + len(word)
+            out.append(cur)
+        if segments[-1] == "":
+            out.append("'")
+        else:
+            out[-1] += "'"
+        self._write_built("\n".join(out))
 
     def process_anchor_extra(self):
         if self.event.anchor is None or self.event.anchor not in self.extra_anchor_data:
